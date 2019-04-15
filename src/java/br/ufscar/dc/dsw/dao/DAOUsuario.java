@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.dao;
 
 import br.ufscar.dc.dsw.model.Usuario;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,8 +44,8 @@ public class DAOUsuario {
         }
     }
 
-    public List<Usuario> getAll() {
-        List<Usuario> listaLivros = new ArrayList<>();
+    public List<Usuario> getAll() throws NoSuchAlgorithmException {
+        List<Usuario> listaUsuarios = new ArrayList<>();
         String sql = "SELECT * FROM Usuario";
         try {
             Connection conn = this.getConnection();
@@ -54,10 +55,9 @@ public class DAOUsuario {
                 String nickname = resultSet.getString("nickname");
                 String nome = resultSet.getString("nome");
                 int grupo = resultSet.getInt("grupo");
-                String senha = resultSet.getString("senha");
                 Date data = resultSet.getDate("data_criacao");
-                Usuario usuario = new Usuario(nickname, nome, grupo, senha, data);
-                listaLivros.add(usuario);
+                Usuario usuario = new Usuario(nickname, nome, grupo, "", data);
+                listaUsuarios.add(usuario);
             }
             resultSet.close();
             statement.close();
@@ -65,34 +65,15 @@ public class DAOUsuario {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return listaLivros;
+        return listaUsuarios;
     }
-
-    public void delete(Usuario user) {
-        String sql = "DELETE FROM Usuario where id = ?";
-        try {
-            Connection conn = this.getConnection();
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, user.getNickname());
-            statement.executeUpdate();
-            statement.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-//    public void update(Usuario usuario) {
-//        String sql = "UPDATE Livro SET nome = ?, grupo = ?, ano = ?, preco = ?";
-//        sql += " WHERE id = ?";
+//
+//    public void delete(Usuario user) {
+//        String sql = "DELETE FROM Usuario where id = ?";
 //        try {
 //            Connection conn = this.getConnection();
 //            PreparedStatement statement = conn.prepareStatement(sql);
-//            statement.setString(1, livro.getTitulo());
-//            statement.setString(2, livro.getAutor());
-//            statement.setInt(3, livro.getAno());
-//            statement.setFloat(4, livro.getPreco());
-//            statement.setInt(5, livro.getId());
+//            statement.setString(1, user.getNickname());
 //            statement.executeUpdate();
 //            statement.close();
 //            conn.close();
@@ -101,7 +82,8 @@ public class DAOUsuario {
 //        }
 //    }
 
-    public Usuario get(String nickname) {
+
+    public Usuario get(String nickname) throws NoSuchAlgorithmException {
         Usuario user = null;
         String sql = "SELECT * FROM Usuario WHERE nickname = ?";
         try {

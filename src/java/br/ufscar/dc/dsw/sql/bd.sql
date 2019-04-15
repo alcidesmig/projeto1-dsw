@@ -1,4 +1,5 @@
-	create table Teatro (
+
+create table Teatro (
     email varchar(256) not null,
     senha varchar(256) not null,
     endereco_url varchar(256) not null, 
@@ -17,13 +18,23 @@
     CONSTRAINT Sala_PK PRIMARY KEY (cnpj)
 );
 
+
+create table Papel (
+    id integer not null generated always as identity (start with 1, increment by 1),
+    email varchar(50) not null,
+    nome varchar(50) not null,
+    constraint Papel_PK PRIMARY KEY (id)
+);
+
  create table Usuario (
-    nickname varchar(256) not null,
+    email varchar(256) not null,
     nome varchar(256) not null,
-    grupo integer not null,
+    papel_id integer references Papel(id),
     senha varchar(512) not null,
     data_criacao date not null,
-    CONSTRAINT Usuario_PK PRIMARY KEY (nickname)
+    ativo boolean,
+    token varchar(512),
+    CONSTRAINT Usuario_PK PRIMARY KEY (email)
 );
 
  create table Promocao (
@@ -35,3 +46,4 @@
     cnpj_teatro integer references Sala(cnpj),
     CONSTRAINT Promocao_PK PRIMARY KEY (id_promocao)
 );
+

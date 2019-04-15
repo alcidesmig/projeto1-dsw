@@ -1,8 +1,10 @@
 package br.ufscar.dc.dsw.controller;
 
-import br.ufscar.dc.dsw.model.Livro;
-import br.ufscar.dc.dsw.dao.LivroDAO;
+import br.ufscar.dc.dsw.model.Usuario;
+import br.ufscar.dc.dsw.dao.DAOUsuario;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,14 +13,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = "/")
+@WebServlet(urlPatterns = "/usuario/*")
 public class UsuarioController extends HttpServlet {
 
-    private LivroDAO dao;
+    private DAOUsuario dao;
 
     @Override
     public void init() {
-        dao = new LivroDAO();
+        dao = new DAOUsuario();
     }
 
     @Override
@@ -30,13 +32,16 @@ public class UsuarioController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
-        String action = request.getServletPath();
+        String action = request.getRequestURI();
+        action = action.split("/")[action.split("/").length - 1];
+        System.out.println("**************************" + action);
         try {
             switch (action) {
                 case "/cadastro":
                     apresentaFormCadastro(request, response);
                     break;
                 default:
+                    apresentaFormCadastro(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -45,57 +50,29 @@ public class UsuarioController extends HttpServlet {
     }
 
     private void lista(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<Livro> listaLivros = dao.getAll();
-        request.setAttribute("listaLivros", listaLivros);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("livro/lista.jsp");
+            throws ServletException, IOException, NoSuchAlgorithmException {
+        List<Usuario> lista = dao.getAll();
+        request.setAttribute("listaUsuario", lista);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("usuario/lista.jsp");
         dispatcher.forward(request, response);
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("livro/formulario.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("templates_usuario/cadastro.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Livro livro = dao.get(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("livro/formulario.jsp");
-        request.setAttribute("livro", livro);
-        dispatcher.forward(request, response);
-    }
-
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
         request.setCharacterEncoding("UTF-8");
-        String titulo = request.getParameter("titulo");
-        String autor = request.getParameter("autor");
-        int ano = Integer.parseInt(request.getParameter("ano"));
-        float preco = Float.parseFloat(request.getParameter("preco"));
-        Livro livro = new Livro(titulo, autor, ano, preco);
-        dao.insert(livro);
+        String nickname = request.getParameter("nickname");
+        String nome = request.getParameter("nome");
+        int papel_id = 0;
+        String senha = request.getParameter("senha");
+        Usuario user = new Usuario(nickname, nome, papel_id, senha, new Date(System.currentTimeMillis()));
+        dao.insert(user);
         response.sendRedirect("lista");
     }
 
-    private void atualize(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        request.setCharacterEncoding("UTF-8");
-        int id = Integer.parseInt(request.getParameter("id"));
-        String titulo = request.getParameter("titulo");
-        String autor = request.getParameter("autor");
-        int ano = Integer.parseInt(request.getParameter("ano"));
-        float preco = Float.parseFloat(request.getParameter("preco"));
-        Livro livro = new Livro(id, titulo, autor, ano, preco);
-        dao.update(livro);
-        response.sendRedirect("lista");
-    }
-
-    private void remove(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Livro book = new Livro(id);
-        dao.delete(book);
-        response.sendRedirect("lista");
-    }
+    
 }
