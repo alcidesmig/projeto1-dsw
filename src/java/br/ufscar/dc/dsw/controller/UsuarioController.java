@@ -36,20 +36,7 @@ public class UsuarioController extends HttpServlet {
                 case "/cadastro":
                     apresentaFormCadastro(request, response);
                     break;
-                case "/insercao":
-                    insere(request, response);
-                    break;
-                case "/remocao":
-                    remove(request, response);
-                    break;
-                case "/edicao":
-                    apresentaFormEdicao(request, response);
-                    break;
-                case "/atualizacao":
-                    atualize(request, response);
-                    break;
                 default:
-                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
