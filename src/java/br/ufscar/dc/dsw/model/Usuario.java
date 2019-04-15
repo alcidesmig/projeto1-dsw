@@ -5,21 +5,62 @@
  */
 package br.ufscar.dc.dsw.model;
 
-/**
- *
- * @author alcides
- */
+import java.util.Date;
+
 public class Usuario {
     private String nickname;
     private String nome;
-    private String grupo;
-}
+    private int grupo;
+    private String senha;
+    private Date data_criacao;
 
-//create table Usuario (
-//    nickname varchar(256) not null,
-//    nome varchar(256) not null,
-//    grupo integer not null,
-//    senha varchar(512) not null,
-//    data_criacao date not null,
-//    CONSTRAINT Usuario_PK PRIMARY KEY (nickname)
-//);
+    public Usuario(String nickname, String nome, int grupo, String senha, Date data_criacao) {
+        this.nickname = nickname;
+        this.nome = nome;
+        this.grupo = grupo;
+        this.senha = senha;
+        this.data_criacao = data_criacao;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(int grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Date getData_criacao() {
+        return data_criacao;
+    }
+
+    public void setData_criacao(Date data_criacao) {
+        this.data_criacao = data_criacao;
+    }
+    
+    
+}

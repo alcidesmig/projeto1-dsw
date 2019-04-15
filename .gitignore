@@ -28,10 +28,8 @@
 hs_err_pid*
 
 ### NetBeans ###
-**/nbproject/private/
-**/nbproject/Makefile-*.mk
-**/nbproject/Package-*.bash
-build/
+
+.bashbuild/
 nbbuild/
 dist/
 nbdist/
