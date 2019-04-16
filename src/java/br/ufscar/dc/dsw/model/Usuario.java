@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class Usuario {
 
-    private String nickname;
+    private String email;
     private String nome;
     private int papel_id;
     private String senha;
@@ -20,25 +20,25 @@ public class Usuario {
     private boolean ativo;
     private String token;
 
-    public Usuario(String nickname, String nome, int papel_id, String senha, Date data_criacao) throws NoSuchAlgorithmException {
-        this.nickname = nickname;
+    public Usuario(String email, String nome, int papel_id, String senha, Date data_criacao) throws NoSuchAlgorithmException {
+        this.email = email;
         this.nome = nome;
         this.papel_id = papel_id;
         this.senha = senha;
         this.data_criacao = data_criacao;
         this.ativo = false;
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] encodedhash = digest.digest(nickname.getBytes(StandardCharsets.UTF_8));
+        byte[] encodedhash = digest.digest(email.getBytes(StandardCharsets.UTF_8));
         this.token = encodedhash.toString();
         this.ativo = false;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setEmail(String nickname) {
+        this.email = nickname;
     }
 
     public String getNome() {

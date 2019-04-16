@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="cadastro" method="post">
             <fieldset>
 
                  <!-- Form Name -->

@@ -27,11 +27,11 @@ public class DAOUsuario {
     }
 
     public void insert(Usuario usuario) {
-        String sql = "INSERT INTO Usuario (nickname, nome, grupo, senha, data_criacao) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Usuario (email, nome, papel_id, senha, data_criacao) VALUES (?, ?, ?, ?, ?)";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, usuario.getNickname());
+            statement.setString(1, usuario.getEmail());
             statement.setString(2, usuario.getNome());
             statement.setInt(3, 1);
             statement.setString(4, usuario.getSenha());
@@ -52,7 +52,7 @@ public class DAOUsuario {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                String nickname = resultSet.getString("nickname");
+                String nickname = resultSet.getString("email");
                 String nome = resultSet.getString("nome");
                 int grupo = resultSet.getInt("grupo");
                 Date data = resultSet.getDate("data_criacao");
@@ -85,7 +85,7 @@ public class DAOUsuario {
 
     public Usuario get(String nickname) throws NoSuchAlgorithmException {
         Usuario user = null;
-        String sql = "SELECT * FROM Usuario WHERE nickname = ?";
+        String sql = "SELECT * FROM Usuario WHERE email = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -93,7 +93,7 @@ public class DAOUsuario {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 String nome = resultSet.getString("nome");
-                int grupo = resultSet.getInt("grupo");
+                int grupo = resultSet.getInt("papel_id");
                 String senha = resultSet.getString("senha");
                 Date data = resultSet.getDate("data_criacao");
                 user = new Usuario(nickname, nome, grupo, senha, data);
