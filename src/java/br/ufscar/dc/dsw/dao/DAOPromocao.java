@@ -12,18 +12,10 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-public class DAOPromocao {
+public class DAOPromocao extends DBConnection {
 
     public DAOPromocao() {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:derby://localhost:1527/dsw_1", "root", "root");
+        super();
     }
 
     public void insert(Promocao promocao) {
