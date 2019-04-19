@@ -74,13 +74,13 @@ public class UsuarioController extends HttpServlet {
             throws ServletException, IOException, NoSuchAlgorithmException {
         List<Usuario> lista = dao.getAll();
         request.setAttribute("listaUsuario", lista);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_usuario/lista.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_usuario/lista.jsp");
         dispatcher.forward(request, response);
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_usuario/cadastro.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_usuario/cadastro.jsp");
         dispatcher.forward(request, response);
     }
 

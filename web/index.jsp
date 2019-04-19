@@ -1,22 +1,6 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <meta charset="UTF-8"/>
-
-        <title>CRUD 2002</title>
-        <link rel="stylesheet" type="text/css" href="semantic/semantic.css">
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-        crossorigin="anonymous"></script>
-        <script src="semantic/semantic.js"></script>
-    </head>
-    <body>
+<jsp:include page="helpers/header.jsp">
+    <jsp:param name="title" value="Index"/>
+</jsp:include>
     <center>
         <h2 class="ui icon header">
             <i class="user icon"></i>
@@ -38,10 +22,9 @@ and open the template in the editor.
             </form>
             <br><br>
             <div class="ui segment">
-                NÃ£o possui uma conta? Clique <a href="">aqui</a>
+                Não possui uma conta? Clique <a href="">aqui</a>
             </div>
         </div>
         <br><br>
     </center>
-</body>
-</html>
+<jsp:include page="views/helpers/footer.jsp"/>

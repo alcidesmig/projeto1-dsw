@@ -75,13 +75,13 @@ public class PromocaoController extends HttpServlet {
             throws ServletException, IOException, NoSuchAlgorithmException {
         List<Promocao> lista = dao.getAll();
         request.setAttribute("listaPromocao", lista);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_promocao/lista.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
         dispatcher.forward(request, response);
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_promocao/cadastro.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
     }
 
