@@ -1,7 +1,8 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.dao.DAOPromocao;
 import br.ufscar.dc.dsw.model.Usuario;
-import br.ufscar.dc.dsw.dao.DAOUsuario;
+import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -15,14 +16,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = "/usuario/*")
-public class UsuarioController extends HttpServlet {
+@WebServlet(urlPatterns = "/promocao/*")
+public class PromocaoController extends HttpServlet {
 
-    private DAOUsuario dao;
+    private DAOPromocao dao;
 
     @Override
     public void init() {
-        dao = new DAOUsuario();
+        dao = new DAOPromocao();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class UsuarioController extends HttpServlet {
         } catch (RuntimeException | IOException | ServletException e) {
             throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PromocaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -66,33 +67,64 @@ public class UsuarioController extends HttpServlet {
         } catch (RuntimeException | IOException | ServletException e) {
             throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PromocaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        List<Usuario> lista = dao.getAll();
-        request.setAttribute("listaUsuario", lista);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_usuario/lista.jsp");
+        List<Promocao> lista = dao.getAll();
+        request.setAttribute("listaPromocao", lista);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_promocao/lista.jsp");
         dispatcher.forward(request, response);
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_usuario/cadastro.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
     }
 
     private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
         request.setCharacterEncoding("UTF-8");
-        String nickname = request.getParameter("usuario_id");
-        String nome = request.getParameter("name");
-        int papel_id = 0;
-        String senha = request.getParameter("password");
-        Usuario user = new Usuario(nickname, nome, papel_id, senha, new Date(System.currentTimeMillis()));
-        dao.insert(user);
-        System.out.println("Inserido.");
+
+        String endereco_url = request.getParameter("endereco_url");
+        String nome_peca = request.getParameter("nome_peca");
+        Date datetime = Date.valueOf(request.getParameter("datetime"));
+        int id_promocao = Integer.valueOf(request.getParameter("id_promocao"));
+        double preco = Double.valueOf(request.getParameter("preco"));
+        int cnpj_teatro = Integer.valueOf(request.getParameter("cnp_teatro"));
+
+        Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+
+        dao.insert(promocao);
+
+        response.sendRedirect("lista");
+    }
+
+    private void atualize(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        request.setCharacterEncoding("UTF-8");
+
+        String endereco_url = request.getParameter("endereco_url");
+        String nome_peca = request.getParameter("nome_peca");
+        Date datetime = Date.valueOf(request.getParameter("datetime"));
+        int id_promocao = Integer.valueOf(request.getParameter("id_promocao"));
+        double preco = Double.valueOf(request.getParameter("preco"));
+        int cnpj_teatro = Integer.valueOf(request.getParameter("cnp_teatro"));
+
+        Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+
+        dao.update(promocao);
+        response.sendRedirect("lista");
+    }
+
+    private void remove(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        int id = Integer.parseInt(request.getParameter("id_promocao"));
+        Promocao p = null;
+        p.setId_promocao(id);
+        dao.delete(p);
         response.sendRedirect("lista");
     }
 
