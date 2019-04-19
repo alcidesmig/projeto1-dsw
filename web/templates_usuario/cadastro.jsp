@@ -1,20 +1,19 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="helpers/header.jsp">
-    <jsp:param name="title" value="Cadastro de usu√°rios"/>
+    <jsp:param name="title" value="Cadastro de usu·rios"/>
 </jsp:include>
     <body>
         <form class="form-horizontal" action="cadastro" method="post">
             <fieldset>
 
                  <!-- Form Name -->
-                <legend>Cadastro de usu√°rio</legend>
+                <legend>Cadastro de usu·rio</legend>
 
                  <!-- Text input-->
                 <div>
                     <label for="usuario_id">ID</label>  
                     <div >
                         <input id="usuario_id" name="usuario_id" type="text" placeholder="example@gmail.com" required="">
-                        <span class="help-block">Insira seu id de usu√°rio</span>        
+                        <span class="help-block">Insira seu id de usu·rio</span>        
                     </div>
                 </div>
 
@@ -39,6 +38,4 @@
             </fieldset>
         </form>
 
-     </body>
-</html>
 <jsp:include page="helpers/footer.jsp"/>
