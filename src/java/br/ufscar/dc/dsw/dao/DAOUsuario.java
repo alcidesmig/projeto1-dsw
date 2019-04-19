@@ -46,7 +46,7 @@ public class DAOUsuario extends DBConnection {
             while (resultSet.next()) {
                 String nickname = resultSet.getString("email");
                 String nome = resultSet.getString("nome");
-                int grupo = resultSet.getInt("grupo");
+                int grupo = resultSet.getInt("papel_id");
                 Date data = resultSet.getDate("data_criacao");
                 Usuario usuario = new Usuario(nickname, nome, grupo, "", data);
                 listaUsuarios.add(usuario);

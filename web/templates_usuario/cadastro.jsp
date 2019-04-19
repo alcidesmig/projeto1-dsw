@@ -1,16 +1,7 @@
-<%-- 
-    Document   : cadastro_usuario
-    Created on : 15/04/2019, 09:09:06
-    Author     : 
---%>
-
- <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="helpers/header.jsp">
+    <jsp:param name="title" value="Cadastro de usuários"/>
+</jsp:include>
     <body>
         <form class="form-horizontal" action="cadastro" method="post">
             <fieldset>
@@ -50,3 +41,4 @@
 
      </body>
 </html>
+<jsp:include page="helpers/footer.jsp"/>
