@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufscar.dc.dsw.model;
 
 import java.nio.charset.StandardCharsets;
@@ -31,6 +26,11 @@ public class Usuario {
         byte[] encodedhash = digest.digest(email.getBytes(StandardCharsets.UTF_8));
         this.token = encodedhash.toString();
         this.ativo = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "email=" + email + ", nome=" + nome + ", papel_id=" + papel_id + ", senha=" + senha + ", data_criacao=" + data_criacao + ", ativo=" + ativo + ", token=" + token + '}';
     }
 
     public String getEmail() {
