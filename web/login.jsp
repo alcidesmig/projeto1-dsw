@@ -4,19 +4,20 @@
 <jsp:include page="views/helpers/navbar.jsp">
         <jsp:param name="active" value="login"/>
 </jsp:include>
-    <center>
-        <h2 class="ui icon header">
-            <i class="user icon"></i>
-            <div class="content">
-                Login
-            </div>
-        </h2>
-        <div class="ui six segment" style="width: 50%;">       
-            <form action="/api/login">
+    <center class="ui text container">
+        <div class="ui segment">       
+            <h2 class="ui icon header">
+                <i class="user icon"></i>
+                <div class="content">
+                    Login
+                </div>
+            </h2>
+            <form class="ui form" action="/api/login">
                 <div class="ui input">
                     <input type="text" placeholder="ID">
                 </div>
-                <br><br>
+                <br>
+                <br>
                 <div class="ui input">
                     <input type="password" placeholder="****">
                 </div>
