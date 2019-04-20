@@ -1,5 +1,12 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="br.ufscar.dc.dsw.i18n.text" />
+<c:set var="laguage" value="${pageContext.response.locale}"/>
+<fmt:setLocale value="${language}"/>
+
 <jsp:include page="views/helpers/header.jsp">
-    <jsp:param name="title" value="Index"/>
+    <jsp:param name="title" value="login"/>
 </jsp:include>
 <jsp:include page="views/helpers/navbar.jsp">
         <jsp:param name="active" value="login"/>
@@ -9,24 +16,24 @@
             <h2 class="ui icon header">
                 <i class="user icon"></i>
                 <div class="content">
-                    Login
+                    <fmt:message key="login.text"/>
                 </div>
             </h2>
             <form class="ui form" action="/api/login">
                 <div class="ui input">
-                    <input type="text" placeholder="ID">
+                    <input type="text" placeholder="<fmt:message key="login.placeholder.username"/>">
                 </div>
                 <br>
                 <br>
                 <div class="ui input">
-                    <input type="password" placeholder="****">
+                    <input type="password" placeholder="<fmt:message key="login.placeholder.password"/>">
                 </div>
                 <br><br>
-                <button type="submit" class="ui positive button">Entrar</button>
+                <button type="submit" class="ui positive button"><fmt:message key="login.text.submit_button"/></button>
             </form>
             <br><br>
             <div class="ui segment">
-                Não possui uma conta? Clique <a href="">aqui</a>
+                <fmt:message key="login.register.text"/> <a href=""><fmt:message key="login.register.button"/></a>
             </div>
         </div>
         <br><br>

@@ -1,12 +1,19 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="br.ufscar.dc.dsw.i18n.text" />
+<c:set var="laguage" value="${pageContext.response.locale}"/>
+<fmt:setLocale value="${language}"/>
+
 <jsp:include page="views/helpers/header.jsp">
-    <jsp:param name="title" value="Index"/>
+    <jsp:param name="title" value="home"/>
 </jsp:include>
 <jsp:include page="views/helpers/navbar.jsp">
     <jsp:param name="active" value="home"/>
 </jsp:include>
 
 <div class="ui text container ">
-    <h1>Desenvolvimento de Softwares para Web - Projeto 1</h1>
+    <h1><fmt:message key="index.h1"/></h1>
     
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ornare gravida sapien eu vestibulum. Nunc pulvinar lorem at suscipit imperdiet. Integer finibus luctus turpis vel ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam pulvinar semper imperdiet. Vivamus hendrerit volutpat dapibus. In magna dui, malesuada ac aliquam sit amet, pharetra id sapien. Pellentesque tincidunt hendrerit ligula posuere commodo. Sed pellentesque bibendum vestibulum. Aliquam neque massa, tempus sit amet commodo vel, facilisis in elit. Cras aliquam, ipsum at efficitur ullamcorper, nisi lacus interdum odio, vel maximus nunc quam ut lorem.</p>
 
