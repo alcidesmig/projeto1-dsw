@@ -15,14 +15,16 @@
             <th>Preço</th>
             <th>Endereço (URL)</th>
             <th>CNPJ do Teatro</th> <!-- Mudar para nome do teatro? -->
+            <th>Data e horário</th> <!-- Mudar para nome do teatro? -->
         </tr>
 
         <c:forEach var="prom" items="${listaPromocao}">
             <tr>
                 <td><c:out value="${prom.nome_peca}" /></td>
-            <td><c:out value="${prom.preco}" /></td>
-            <td><c:out value="${prom.endereco_url}" /></td>
-            <td><c:out value="${prom.cnpj_teatro}" /></td>
+                <td><c:out value="${prom.preco}" /></td>
+                <td><c:out value="${prom.endereco_url}" /></td>
+                <td><c:out value="${prom.cnpj_teatro}" /></td>
+                <td><c:out value="${prom.datetime}" /></td>
             </tr>
         </c:forEach>
     </table>

@@ -16,6 +16,13 @@
             </div>
         </div>
         <div>
+            <label for="nome_peca">ID</label>  
+            <div >
+                <input value="<c:out value='${prom.nome_peca}'/>" id="nome_peca" name="nome_peca" type="text" placeholder="">
+                <span>Nome da peça</span>        
+            </div>
+        </div>
+        <div>
             <label for="preco">Preço</label>  
             <div >
                 <input value="<c:out value='${prom.preco}'/>" id="preco" name="preco" type="text" placeholder="Preço em reais" required="">
