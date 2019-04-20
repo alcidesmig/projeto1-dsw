@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="Gerenciamento de promoções"/>
 </jsp:include>
@@ -6,8 +8,7 @@
         <h1>Gerenciamento de promoções</h1>
         <h2>
             <a href="cadastro">Adicione Novo Livro</a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="lista">Lista de Livros</a>
+            <a href="lista">Lista de Promocoes</a>
         </h2>
     </center>
     <div align="center">

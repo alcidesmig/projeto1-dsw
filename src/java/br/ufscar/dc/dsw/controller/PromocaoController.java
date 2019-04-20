@@ -38,12 +38,12 @@ public class PromocaoController extends HttpServlet {
                     break;
                 case "edicao":
                     atualize(request, response);
-                    break;
+                    break;      
                 case "remocao":
                     remove(request, response);
                     break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -64,7 +64,7 @@ public class PromocaoController extends HttpServlet {
                     apresentaFormCadastro(request, response);
                     break;
                 case "gerenciar":
-                    apresentaFormCadastro(request, response);
+                    listaGerenciar(request, response);
                     break;
                 case "edicao":
                     apresentaFormEdicao(request, response);
@@ -73,7 +73,7 @@ public class PromocaoController extends HttpServlet {
                     lista(request, response);
                     break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -90,10 +90,17 @@ public class PromocaoController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
         dispatcher.forward(request, response);
     }
+    private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, NoSuchAlgorithmException {
+        List<Promocao> lista = dao.getAll();
+        request.setAttribute("listaPromocao", lista);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+        dispatcher.forward(request, response);
+    }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("listaTeatros", new DAOTeatro().getAll());
+        request.setAttribute("listaSalas", new DAOSala().getAll());
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
     }
@@ -103,7 +110,7 @@ public class PromocaoController extends HttpServlet {
         int id = Integer.valueOf(request.getParameter("id"));
         Promocao prom = dao.get(id);
         request.setAttribute("promocao", prom);
-        request.setAttribute("listaTeatros", new DAOTeatro().getAll());
+        request.setAttribute("listaSalas", new DAOSala().getAll());
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
