@@ -1,4 +1,4 @@
-<jsp:include page="helpers/header.jsp">
+<jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="Cadastro de usuários"/>
 </jsp:include>
     <body>
@@ -38,4 +38,4 @@
             </fieldset>
         </form>
 
-<jsp:include page="helpers/footer.jsp"/>
+<jsp:include page="../helpers/footer.jsp"/>

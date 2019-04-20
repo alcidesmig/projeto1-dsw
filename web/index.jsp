@@ -1,4 +1,4 @@
-<jsp:include page="helpers/header.jsp">
+<jsp:include page="views/helpers/header.jsp">
     <jsp:param name="title" value="Index"/>
 </jsp:include>
     <center>

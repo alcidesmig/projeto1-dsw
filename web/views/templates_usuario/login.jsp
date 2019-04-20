@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="views/helpers/header.jsp">
+<jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="Login"/>
 </jsp:include>
 <center>
@@ -31,5 +31,5 @@
     </div>
     <br><br>
 </center>
-<jsp:include page="views/helpers/footer.jsp"/>
+<jsp:include page="../helpers/footer.jsp"/>
 
