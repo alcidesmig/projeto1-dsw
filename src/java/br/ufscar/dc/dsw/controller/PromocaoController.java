@@ -1,7 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.DAOPromocao;
-import br.ufscar.dc.dsw.model.Usuario;
+import br.ufscar.dc.dsw.dao.DAOTeatro;
 import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -36,6 +36,12 @@ public class PromocaoController extends HttpServlet {
                 case "cadastro":
                     insere(request, response);
                     break;
+                case "edicao":
+                    atualize(request, response);
+                    break;
+                case "remocao":
+                    remove(request, response);
+                    break;
                 default:
                     apresentaFormCadastro(request, response);
                     break;
@@ -56,6 +62,12 @@ public class PromocaoController extends HttpServlet {
             switch (action) {
                 case "cadastro":
                     apresentaFormCadastro(request, response);
+                    break;
+                case "gerenciar":
+                    apresentaFormCadastro(request, response);
+                    break;
+                case "edicao":
+                    apresentaFormEdicao(request, response);
                     break;
                 case "lista":
                     lista(request, response);
@@ -81,6 +93,18 @@ public class PromocaoController extends HttpServlet {
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("listaTeatros", new DAOTeatro().getAll());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.valueOf(request.getParameter("id"));
+        Promocao prom = dao.get(id);
+        request.setAttribute("promocao", prom);
+        request.setAttribute("listaTeatros", new DAOTeatro().getAll());
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
     }
@@ -125,7 +149,7 @@ public class PromocaoController extends HttpServlet {
         Promocao p = null;
         p.setId_promocao(id);
         dao.delete(p);
-        response.sendRedirect("lista");
+        response.sendRedirect("gerenciar");
     }
 
 }
