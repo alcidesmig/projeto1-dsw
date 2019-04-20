@@ -9,6 +9,13 @@
     <h2>
         <a href="cadastro">Adicione Novo Livro</a>
         <a href="lista">Lista de Promocoes</a>
+        <div>
+            <form action="gerenciar">
+                <p>Buscar</p>
+                <input type="text" id="busca" name="busca"/>
+                <input type="submit">
+            </form>
+        </div>
     </h2>
 </center>
 <div align="center">

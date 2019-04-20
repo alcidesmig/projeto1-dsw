@@ -10,6 +10,13 @@
 <div align="center">
     <table border="1" cellpadding="5">
         <caption><h2>Listagem de Promoções</h2></caption>
+        <div>
+            <form action="listar">
+                <p>Buscar</p>
+                <input type="text" id="busca" name="busca"/>
+                <input type="submit">
+            </form>
+        </div>
         <tr>
             <th>Nome da peça</th>
             <th>Preço</th>

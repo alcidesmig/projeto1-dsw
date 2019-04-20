@@ -120,4 +120,28 @@ public class DAOPromocao extends DBConnection {
         }
         return promocao;
     }
+    public List<Promocao> getByName(String nome_peca) {
+        List<Promocao> listaPromocao = new ArrayList<>();
+        String sql = "SELECT * FROM Promocao where nome_peca like '%?%'";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                int id_promocao = resultSet.getInt("id_promocao");
+                Double preco = resultSet.getDouble("preco");
+                Date datetime = resultSet.getDate("datetime");
+                String endereco_url = resultSet.getString("endereco_url");
+                int cnpj_teatro = resultSet.getInt("cnpj_teatro");
+                Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+                listaPromocao.add(promocao);
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaPromocao;
+    }
 }

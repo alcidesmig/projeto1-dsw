@@ -38,7 +38,7 @@ public class PromocaoController extends HttpServlet {
                     break;
                 case "edicao":
                     atualize(request, response);
-                    break;      
+                    break;
                 case "remocao":
                     remove(request, response);
                     break;
@@ -85,17 +85,33 @@ public class PromocaoController extends HttpServlet {
 
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        List<Promocao> lista = dao.getAll();
-        request.setAttribute("listaPromocao", lista);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
-        dispatcher.forward(request, response);
+        if (request.getAttribute("busca") != null) {
+            List<Promocao> lista = dao.getByName(String.valueOf(request.getAttribute("busca")));
+            request.setAttribute("listaPromocao", lista);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            List<Promocao> lista = dao.getAll();
+            request.setAttribute("listaPromocao", lista);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
+            dispatcher.forward(request, response);
+        }
+
     }
+
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        List<Promocao> lista = dao.getAll();
-        request.setAttribute("listaPromocao", lista);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
-        dispatcher.forward(request, response);
+        if (request.getAttribute("busca") != null) {
+            List<Promocao> lista = dao.getByName(String.valueOf(request.getAttribute("busca")));
+            request.setAttribute("listaPromocao", lista);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            List<Promocao> lista = dao.getAll();
+            request.setAttribute("listaPromocao", lista);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
