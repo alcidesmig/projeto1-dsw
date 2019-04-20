@@ -1,7 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.DAOPromocao;
-import br.ufscar.dc.dsw.model.Usuario;
+import br.ufscar.dc.dsw.dao.DAOTeatro;
 import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -36,8 +36,14 @@ public class PromocaoController extends HttpServlet {
                 case "cadastro":
                     insere(request, response);
                     break;
+                case "edicao":
+                    atualize(request, response);
+                    break;      
+                case "remocao":
+                    remove(request, response);
+                    break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -57,11 +63,17 @@ public class PromocaoController extends HttpServlet {
                 case "cadastro":
                     apresentaFormCadastro(request, response);
                     break;
+                case "gerenciar":
+                    listaGerenciar(request, response);
+                    break;
+                case "edicao":
+                    apresentaFormEdicao(request, response);
+                    break;
                 case "lista":
                     lista(request, response);
                     break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -78,9 +90,28 @@ public class PromocaoController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
         dispatcher.forward(request, response);
     }
+    private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, NoSuchAlgorithmException {
+        List<Promocao> lista = dao.getAll();
+        request.setAttribute("listaPromocao", lista);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+        dispatcher.forward(request, response);
+    }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("listaSalas", new DAOSala().getAll());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.valueOf(request.getParameter("id"));
+        Promocao prom = dao.get(id);
+        request.setAttribute("promocao", prom);
+        request.setAttribute("listaSalas", new DAOSala().getAll());
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
     }
@@ -125,7 +156,7 @@ public class PromocaoController extends HttpServlet {
         Promocao p = null;
         p.setId_promocao(id);
         dao.delete(p);
-        response.sendRedirect("lista");
+        response.sendRedirect("gerenciar");
     }
 
 }
