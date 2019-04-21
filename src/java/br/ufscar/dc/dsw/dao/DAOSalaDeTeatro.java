@@ -1,6 +1,6 @@
 package br.ufscar.dc.dsw.dao;
 
-import br.ufscar.dc.dsw.model.Usuario;
+import br.ufscar.dc.dsw.model.SalaDeTeatro;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,45 +11,46 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-public class DAOTeatro extends DBConnection {
+public class DAOSalaDeTeatro extends DBConnection {
 
-    public DAOTeatro() {
+    public DAOSalaDeTeatro() {
         super();
     }
 
-    public void insert(Usuario usuario) {
-        String sql = "INSERT INTO Usuario (nickname, nome, grupo, senha, data_criacao) VALUES (?, ?, ?, ?, ?)";
+    public boolean insert(SalaDeTeatro teatro) {
+        String sql = "INSERT INTO SalaDeTeatro (email, senha, cnpj, nome, cidade) VALUES (?, ?, ?, ?, ?)";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, usuario.getNickname());
-            statement.setString(2, usuario.getNome());
-            statement.setInt(3, 1);
-            statement.setString(4, usuario.getSenha());
-            statement.setDate(5, new Date(System.currentTimeMillis()));
+            statement.setString(1, teatro.getEmail());
+            statement.setString(2, teatro.getSenha());
+            statement.setString(3, teatro.getCnpj());
+            statement.setString(4, teatro.getNome());
+            statement.setString(5, teatro.getCidade());
             statement.executeUpdate();
             statement.close();
             conn.close();
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            return false;
         }
     }
 
-    public List<Usuario> getAll() {
-        List<Usuario> listaLivros = new ArrayList<>();
-        String sql = "SELECT * FROM Usuario";
+    public List<SalaDeTeatro> getAll() {
+        List<SalaDeTeatro> listaTeatros = new ArrayList<>();
+        String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro";
         try {
             Connection conn = this.getConnection();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                String nickname = resultSet.getString("nickname");
+                String email = resultSet.getString("email");
+                String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
-                int grupo = resultSet.getInt("grupo");
-                String senha = resultSet.getString("senha");
-                Date data = resultSet.getDate("data_criacao");
-                Usuario usuario = new Usuario(nickname, nome, grupo, senha, data);
-                listaLivros.add(usuario);
+                String cidade = resultSet.getString("cidade");
+                SalaDeTeatro teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade);
+                listaTeatros.add(teatro);
             }
             resultSet.close();
             statement.close();
@@ -57,20 +58,21 @@ public class DAOTeatro extends DBConnection {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return listaLivros;
+        return listaTeatros;
     }
 
-    public void delete(Usuario user) {
-        String sql = "DELETE FROM Usuario where id = ?";
+    public boolean delete(SalaDeTeatro teatro) {
+        String sql = "DELETE FROM SalaDeTeatro where cnpj = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, user.getNickname());
+            statement.setString(1, teatro.getCnpj());
             statement.executeUpdate();
             statement.close();
             conn.close();
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
@@ -93,20 +95,20 @@ public class DAOTeatro extends DBConnection {
 //        }
 //    }
 
-    public Usuario get(String nickname) {
-        Usuario user = null;
-        String sql = "SELECT * FROM Usuario WHERE nickname = ?";
+    public SalaDeTeatro get(String id) {
+        SalaDeTeatro teatro = null;
+        String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE cnpj = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, nickname);
+            statement.setString(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+                String email = resultSet.getString("email");
+                String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
-                int grupo = resultSet.getInt("grupo");
-                String senha = resultSet.getString("senha");
-                Date data = resultSet.getDate("data_criacao");
-                user = new Usuario(nickname, nome, grupo, senha, data);
+                String cidade = resultSet.getString("cidade");
+                teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade);
             }
             resultSet.close();
             statement.close();
@@ -114,6 +116,6 @@ public class DAOTeatro extends DBConnection {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return user;
+        return teatro;
     }
 }
