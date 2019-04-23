@@ -1,21 +1,21 @@
 
-create table Teatro (
+create table SiteDeVenda (
     email varchar(256) not null,
     senha varchar(256) not null,
-    endereco_url varchar(256) not null, 
+    url varchar(256) not null, 
     nome varchar(256) not null,
-    telefone varchar(256) not null,   
-    CONSTRAINT Teatro_PK PRIMARY KEY (email)
+    telefone varchar(256) not null,
+    CONSTRAINT SiteDeVenda_PK PRIMARY KEY (email)
 );
 
- create table Sala ( 
-    cnpj integer not null, 
+ create table SalaDeTeatro ( 
+    cnpj varchar(256) not null, 
     email varchar(256) not null,
     senha varchar(256) not null,
     nome varchar(256) not null,
     cidade varchar(256) not null,
-    teatro_email varchar(256) references Teatro (email),
-    CONSTRAINT Sala_PK PRIMARY KEY (cnpj)
+    teatro_email varchar(256) references SiteDeVenda (email),
+    CONSTRAINT SalaDeTeatro_PK PRIMARY KEY (cnpj)
 );
 
 
