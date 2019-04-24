@@ -1,0 +1,70 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<jsp:include page="../helpers/header_das_subpasta.jsp">
+    <jsp:param name="title" value="Lista de Teatros"/>
+</jsp:include>
+<jsp:include page="../helpers/navbar.jsp">
+    <jsp:param name="active" value="teatros"/>
+</jsp:include>
+
+<center>
+    <h1><fmt:message key="sala_teatros.title"/></h1>
+</center>
+<div align="center">
+    <table border="1" cellpadding="5" id="java_is_terrible" class="ui celled collapsing table" style="width: 80%;">
+        <caption><h2>Listagem de Salas de Teatro</h2></caption>
+        <button onclick="sortTable()" class="ui button">Ordenar por cidade</button>
+        <tr>
+            <th><button onclick="sortTable()" class="ui button positive">Cidade</button></th>
+            <th>Email</th>
+            <th>CNPJ</th>
+            <th>Nome</th>  
+        </tr>
+
+        <c:forEach var="teatro" items="${listaTeatros}">
+            <tr>
+                <td><c:out value="${prom.cidade}" /></td>
+                <td><c:out value="${prom.email}" /></td>
+                <td><c:out value="${prom.cnpj}" /></td>
+                <td><c:out value="${prom.nome}" /></td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
+<script>
+function sortTable() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("java_is_terrible");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+</script>
+<jsp:include page="../helpers/footer.jsp"/>
