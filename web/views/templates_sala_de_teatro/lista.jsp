@@ -6,21 +6,29 @@
 <jsp:include page="../helpers/navbar.jsp">
     <jsp:param name="active" value="teatros"/>
 </jsp:include>
-
+<style>
+    p{
+        cursor: pointer;
+        font-size: 24px;
+    }    
+</style>
 <center>
-    <h1><fmt:message key="sala_teatros.title"/></h1>
+    <h1>Listagem Das Salas de Teatro</h1>
 </center>
 <br>
+<br>
 <div align="center">
-    <table border="1" cellpadding="5" id="java_is_terrible" class="ui celled table" style="width: 80%;">
-        <caption><h2>Listagem de Salas de Teatro</h2></caption>
+    <table border="1" cellpadding="5" id="java_is_terrible" class="ui sortable celled table" style="width: 80%;">
+         <div class="ui icon input">
+        <input type="text" placeholder="Filtre os teatros por cidade!" id="java_is_horrible" onkeyup="filter()">
+        <i class="search icon"></i>
+        </div>
         <tr>
-            <th><button onclick="sortTable()" class="ui labeled icon positive button"> <i class="sort alphabet down icon"></i>Cidade</button></th>
-            <th>Email</th>
-            <th>CNPJ</th>
-            <th>Nome</th>  
-            <th>Site de venda (e-mail)</th>  
-        </tr>
+            <th><p onclick="sortTable(0)" class="ui labeled icon primary full-width"> <i class="sort alphabet down icon"></i>Cidade</p></th>
+            <th><p onclick="sortTable(1)" class="ui labeled icon primary full-width"> <i class="sort alphabet down icon"></i>Email</p></th>
+            <th><p onclick="sortTable(2)" class="ui labeled icon primary full-width"> <i class="sort alphabet down icon"></i>CNPJ</p></th>
+            <th><p onclick="sortTable(3)" class="ui labeled icon primary1 full-width"> <i class="sort alphabet down icon"></i>Nome</p></th>  
+        </tr>  
         <c:forEach var="teatro" items="${listaTeatros}">
             <tr>
                 <td><c:out value="${teatro.cidade}" /></td>
@@ -33,7 +41,7 @@
     </table>
 </div>
 <script>
-function sortTable() {
+function sortTable(index) {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("java_is_terrible");
   switching = true;
@@ -50,8 +58,8 @@ function sortTable() {
       shouldSwitch = false;
       /*Get the two elements you want to compare,
       one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[0];
-      y = rows[i + 1].getElementsByTagName("TD")[0];
+      x = rows[i].getElementsByTagName("TD")[index];
+      y = rows[i + 1].getElementsByTagName("TD")[index];
       //check if the two rows should switch place:
       if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
         //if so, mark as a switch and break the loop:
@@ -67,5 +75,25 @@ function sortTable() {
     }
   }
 }
+
+function filter() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("java_is_horrible");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("java_is_terrible");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
 </script>
 <jsp:include page="../helpers/footer.jsp"/>
