@@ -1,4 +1,3 @@
-
 create table SiteDeVenda (
     email varchar(256) not null,
     senha varchar(256) not null,
@@ -41,9 +40,9 @@ create table Papel (
     id_promocao integer not null generated always as identity (start with 1, increment by 1),
     nome_peca varchar(256) not null,
     preco double not null,
-    datetime timestamp not null,
+    datetime varchar(45) not null,
     endereco_url varchar(256) not null,
-    cnpj_teatro integer references Sala(cnpj),
+    cnpj_teatro varchar(256) references SalaDeTeatro(cnpj),
     CONSTRAINT Promocao_PK PRIMARY KEY (id_promocao)
 );
 

@@ -8,15 +8,17 @@
     <c:if test="${prom == null}">
         <form action="cadastro" method="post">
         </c:if>
-        <div>
-            <label for="id_promocao">ID</label>  
-            <div >
-                <input value="<c:out value='${prom.id_promocao}'/>" id="id_promocao" name="id_promocao" type="text" placeholder="" disabled>
-                <span>Deixe em branco para preenchimento automático</span>        
+        <c:if test="${prom != null}">
+            <div>
+                <label for="id_promocao">ID</label>  
+                <div >
+                    <input value="<c:out value='${prom.id_promocao}'/>" id="id_promocao" name="id_promocao" type="text" placeholder="" disabled>
+                    <span>Deixe em branco para preenchimento automático</span>        
+                </div>
             </div>
-        </div>
+        </c:if>
         <div>
-            <label for="nome_peca">ID</label>  
+            <label for="nome_peca">Nome da peça</label>  
             <div >
                 <input value="<c:out value='${prom.nome_peca}'/>" id="nome_peca" name="nome_peca" type="text" placeholder="">
                 <span>Nome da peça</span>        

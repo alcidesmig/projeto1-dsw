@@ -5,13 +5,20 @@ import java.sql.Date;
 public class Promocao {
     private int id_promocao;
     private double preco;
-    private Date datetime;
+    private String datetime;
     private String endereco_url;
-    private int cnpj_teatro;
+    private String cnpj_teatro;
     private String nome_peca;
 
-    public Promocao(int id_promocao, double preco, Date datetime, String endereco_url, int cnpj_teatro, String nome_peca) {
+    public Promocao(int id_promocao, double preco, String datetime, String endereco_url, String cnpj_teatro, String nome_peca) {
         this.id_promocao = id_promocao;
+        this.preco = preco;
+        this.datetime = datetime;
+        this.endereco_url = endereco_url;
+        this.cnpj_teatro = cnpj_teatro;
+        this.nome_peca = nome_peca;
+    }
+    public Promocao(double preco, String datetime, String endereco_url, String cnpj_teatro, String nome_peca) {
         this.preco = preco;
         this.datetime = datetime;
         this.endereco_url = endereco_url;
@@ -41,11 +48,11 @@ public class Promocao {
         this.preco = preco;
     }
 
-    public Date getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Date datetime) {
+    public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 
@@ -57,11 +64,11 @@ public class Promocao {
         this.endereco_url = endereco_url;
     }
 
-    public int getCnpj_teatro() {
+    public String getCnpj_teatro() {
         return cnpj_teatro;
     }
 
-    public void setCnpj_teatro(int cnpj_teatro) {
+    public void setCnpj_teatro(String cnpj_teatro) {
         this.cnpj_teatro = cnpj_teatro;
     }
 

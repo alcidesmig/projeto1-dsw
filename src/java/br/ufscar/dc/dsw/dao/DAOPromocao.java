@@ -19,16 +19,15 @@ public class DAOPromocao extends DBConnection {
     }
 
     public void insert(Promocao promocao) {
-        String sql = "INSERT INTO Promocao (id_promocao, nome_peca, preco, datetime, endereco_url, cnpj_teatro) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Promocao (nome_peca, preco, datetime, endereco_url, cnpj_teatro) VALUES (?, ?, ?, ?, ?)";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, promocao.getId_promocao());
-            statement.setString(2, promocao.getNome_peca());
-            statement.setDouble(3, promocao.getPreco());
-            statement.setDate(4, promocao.getDatetime());
-            statement.setString(5, promocao.getEndereco_url());
-            statement.setInt(6, promocao.getCnpj_teatro());
+            statement.setString(1, promocao.getNome_peca());
+            statement.setDouble(2, promocao.getPreco());
+            statement.setString(3, promocao.getDatetime());
+            statement.setString(4, promocao.getEndereco_url());
+            statement.setString(5, promocao.getCnpj_teatro());
             statement.executeUpdate();
             statement.close();
             conn.close();
@@ -48,9 +47,9 @@ public class DAOPromocao extends DBConnection {
                 int id_promocao = resultSet.getInt("id_promocao");
                 String nome_peca = resultSet.getString("nome_peca");
                 Double preco = resultSet.getDouble("preco");
-                Date datetime = resultSet.getDate("datetime");
+                String datetime = resultSet.getString("datetime");
                 String endereco_url = resultSet.getString("endereco_url");
-                int cnpj_teatro = resultSet.getInt("cnpj_teatro");
+                String cnpj_teatro = resultSet.getString("cnpj_teatro");
                 Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
                 listaPromocao.add(promocao);
             }
@@ -85,9 +84,9 @@ public class DAOPromocao extends DBConnection {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, promocao.getNome_peca());
             statement.setDouble(2, promocao.getPreco());
-            statement.setDate(3, promocao.getDatetime());
+            statement.setString(3, promocao.getDatetime());
             statement.setString(4, promocao.getEndereco_url());
-            statement.setInt(5, promocao.getCnpj_teatro());
+            statement.setString(5, promocao.getCnpj_teatro());
             statement.executeUpdate();
             statement.close();
             conn.close();
@@ -107,9 +106,9 @@ public class DAOPromocao extends DBConnection {
             if (resultSet.next()) {
                 String nome_peca = resultSet.getString("nome_peca");
                 double preco = resultSet.getDouble("preco");
-                Date datetime = resultSet.getDate("datetime");
+                String datetime = resultSet.getString("datetime");
                 String endereco_url = resultSet.getString("endereco_url");
-                int cnpj_teatro = resultSet.getInt("cnpj_teatro");
+                String cnpj_teatro = resultSet.getString("cnpj_teatro");
                 promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
             }
             resultSet.close();
@@ -122,17 +121,18 @@ public class DAOPromocao extends DBConnection {
     }
     public List<Promocao> getByName(String nome_peca) {
         List<Promocao> listaPromocao = new ArrayList<>();
-        String sql = "SELECT * FROM Promocao where nome_peca like '%?%'";
+        String sql = "SELECT * FROM Promocao where nome_peca like ?";
         try {
             Connection conn = this.getConnection();
-            Statement statement = conn.createStatement();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "%" +nome_peca + "%");
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 int id_promocao = resultSet.getInt("id_promocao");
                 Double preco = resultSet.getDouble("preco");
-                Date datetime = resultSet.getDate("datetime");
+                String datetime = resultSet.getString("datetime");
                 String endereco_url = resultSet.getString("endereco_url");
-                int cnpj_teatro = resultSet.getInt("cnpj_teatro");
+                String cnpj_teatro = resultSet.getString("cnpj_teatro");
                 Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
                 listaPromocao.add(promocao);
             }

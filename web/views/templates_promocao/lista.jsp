@@ -11,7 +11,7 @@
     <table border="1" cellpadding="5">
         <caption><h2>Listagem de Promoções</h2></caption>
         <div>
-            <form action="listar">
+            <form action="lista" method="POST">
                 <p>Buscar</p>
                 <input type="text" id="busca" name="busca"/>
                 <input type="submit">

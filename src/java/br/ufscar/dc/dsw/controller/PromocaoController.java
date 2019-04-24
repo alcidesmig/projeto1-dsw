@@ -6,6 +6,8 @@ import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +51,8 @@ public class PromocaoController extends HttpServlet {
         } catch (RuntimeException | IOException | ServletException e) {
             throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(PromocaoController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(PromocaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -132,18 +136,19 @@ public class PromocaoController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException, ParseException {
         request.setCharacterEncoding("UTF-8");
 
         String endereco_url = request.getParameter("endereco_url");
         String nome_peca = request.getParameter("nome_peca");
-        Date datetime = Date.valueOf(request.getParameter("datetime"));
-        int id_promocao = Integer.valueOf(request.getParameter("id_promocao"));
+        String datetime = request.getParameter("datetime");
         double preco = Double.valueOf(request.getParameter("preco"));
-        int cnpj_teatro = Integer.valueOf(request.getParameter("cnp_teatro"));
-
-        Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
-
+        String cnpj = request.getParameter("cnp_teatro");
+        System.out.println("CNPJ:" + cnpj);
+        String cnpj_teatro = cnpj;
+        Promocao promocao = new Promocao(preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+        System.out.println("Data: " + datetime);
+        
         dao.insert(promocao);
 
         response.sendRedirect("lista");
@@ -155,10 +160,10 @@ public class PromocaoController extends HttpServlet {
 
         String endereco_url = request.getParameter("endereco_url");
         String nome_peca = request.getParameter("nome_peca");
-        Date datetime = Date.valueOf(request.getParameter("datetime"));
+        String datetime = String.valueOf(request.getParameter("datetime"));
         int id_promocao = Integer.valueOf(request.getParameter("id_promocao"));
         double preco = Double.valueOf(request.getParameter("preco"));
-        int cnpj_teatro = Integer.valueOf(request.getParameter("cnp_teatro"));
+        String cnpj_teatro = (request.getParameter("cnp_teatro"));
 
         Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
 
