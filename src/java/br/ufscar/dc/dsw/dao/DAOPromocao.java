@@ -94,7 +94,7 @@ public class DAOPromocao extends DBConnection {
             throw new RuntimeException(e);
         }
     }
-    
+
     public Promocao get(int id_promocao) {
         Promocao promocao = null;
         String sql = "SELECT * FROM Promocao WHERE id_promocao = ?";
@@ -119,19 +119,20 @@ public class DAOPromocao extends DBConnection {
         }
         return promocao;
     }
+
     public List<Promocao> getByName(String nome_peca) {
         List<Promocao> listaPromocao = new ArrayList<>();
-        String sql = "SELECT * FROM Promocao where nome_peca like ?";
+        String sql = "SELECT * FROM Promocao where nome_peca like '%" + nome_peca + "%'";
         try {
             Connection conn = this.getConnection();
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, "%" +nome_peca + "%");
+            Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 int id_promocao = resultSet.getInt("id_promocao");
                 Double preco = resultSet.getDouble("preco");
                 String datetime = resultSet.getString("datetime");
                 String endereco_url = resultSet.getString("endereco_url");
+                nome_peca = resultSet.getString("nome_peca");
                 String cnpj_teatro = resultSet.getString("cnpj_teatro");
                 Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
                 listaPromocao.add(promocao);

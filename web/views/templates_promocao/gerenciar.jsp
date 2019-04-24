@@ -39,7 +39,7 @@
                 <td><c:out value="${prom.datetime}" /></td>
 
                 <td>
-                    <a href="edicao?id=<c:out value='${prom.id_promocao}' />">Edição</a>
+                    <a href="edicao_form?id=<c:out value='${prom.id_promocao}' />">Edição</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="remocao?id=<c:out value='${prom.id_promocao}' />"
                        onclick="return confirm('Tem certeza de que deseja excluir este item?');">

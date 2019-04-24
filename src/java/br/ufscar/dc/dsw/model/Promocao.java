@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.model;
 import java.sql.Date;
 
 public class Promocao {
+
     private int id_promocao;
     private double preco;
     private String datetime;
@@ -18,6 +19,7 @@ public class Promocao {
         this.cnpj_teatro = cnpj_teatro;
         this.nome_peca = nome_peca;
     }
+
     public Promocao(double preco, String datetime, String endereco_url, String cnpj_teatro, String nome_peca) {
         this.preco = preco;
         this.datetime = datetime;
@@ -26,11 +28,14 @@ public class Promocao {
         this.nome_peca = nome_peca;
     }
 
+    public Promocao(int id) {
+        this.id_promocao = id;
+    }
+
     @Override
     public String toString() {
         return "Promocao{" + "id_promocao=" + id_promocao + ", preco=" + preco + ", datetime=" + datetime + ", endereco_url=" + endereco_url + ", cnpj_teatro=" + cnpj_teatro + ", nome_peca=" + nome_peca + '}';
     }
-    
 
     public int getId_promocao() {
         return id_promocao;

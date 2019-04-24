@@ -56,7 +56,7 @@
                             </c:when>
                             <c:otherwise>
                                 <option value="<c:out value="${sala.cnpj}" />"><c:out value="${sala.nome}"/> - <c:out value="${sala.cnpj}"/></option> 
-                            </c:otherwise>
+                    -        </c:otherwise>
                         </c:choose>
                     </c:forEach>
                 </select>

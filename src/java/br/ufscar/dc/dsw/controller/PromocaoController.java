@@ -38,11 +38,11 @@ public class PromocaoController extends HttpServlet {
                 case "cadastro":
                     insere(request, response);
                     break;
-                case "edicao":
-                    atualize(request, response);
+                case "lista":
+                    lista(request, response);
                     break;
-                case "remocao":
-                    remove(request, response);
+                case "gerenciar":
+                    listaGerenciar(request, response);
                     break;
                 default:
                     lista(request, response);
@@ -70,8 +70,14 @@ public class PromocaoController extends HttpServlet {
                 case "gerenciar":
                     listaGerenciar(request, response);
                     break;
-                case "edicao":
+                case "edicao_form":
                     apresentaFormEdicao(request, response);
+                    break;
+                case "edicao":
+                    atualize(request, response);
+                    break;
+                case "remocao":
+                    remove(request, response);
                     break;
                 case "lista":
                     lista(request, response);
@@ -89,11 +95,12 @@ public class PromocaoController extends HttpServlet {
 
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        if (request.getAttribute("busca") != null) {
-            List<Promocao> lista = dao.getByName(String.valueOf(request.getAttribute("busca")));
+        if (request.getMethod().equals("POST")) {
+            List<Promocao> lista = dao.getByName(request.getParameter("busca"));
             request.setAttribute("listaPromocao", lista);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
             dispatcher.forward(request, response);
+
         } else {
             List<Promocao> lista = dao.getAll();
             request.setAttribute("listaPromocao", lista);
@@ -105,8 +112,8 @@ public class PromocaoController extends HttpServlet {
 
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        if (request.getAttribute("busca") != null) {
-            List<Promocao> lista = dao.getByName(String.valueOf(request.getAttribute("busca")));
+        if (request.getParameter("busca") != null) {
+            List<Promocao> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
             request.setAttribute("listaPromocao", lista);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
             dispatcher.forward(request, response);
@@ -129,7 +136,7 @@ public class PromocaoController extends HttpServlet {
             throws ServletException, IOException {
         int id = Integer.valueOf(request.getParameter("id"));
         Promocao prom = dao.get(id);
-        request.setAttribute("promocao", prom);
+        request.setAttribute("prom", prom);
         request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
@@ -144,11 +151,9 @@ public class PromocaoController extends HttpServlet {
         String datetime = request.getParameter("datetime");
         double preco = Double.valueOf(request.getParameter("preco"));
         String cnpj = request.getParameter("cnpj_teatro");
-        System.out.println("CNPJ:" + cnpj);
         String cnpj_teatro = cnpj;
         Promocao promocao = new Promocao(preco, datetime, endereco_url, cnpj_teatro, nome_peca);
-        System.out.println("Data: " + datetime);
-        
+
         dao.insert(promocao);
 
         response.sendRedirect("lista");
@@ -168,14 +173,13 @@ public class PromocaoController extends HttpServlet {
         Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
 
         dao.update(promocao);
-        response.sendRedirect("lista");
+        response.sendRedirect("listaGerenciar");
     }
 
     private void remove(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        int id = Integer.parseInt(request.getParameter("id_promocao"));
-        Promocao p = null;
-        p.setId_promocao(id);
+        int id = Integer.valueOf(request.getParameter("id"));
+        Promocao p = new Promocao(id);
         dao.delete(p);
         response.sendRedirect("gerenciar");
     }
