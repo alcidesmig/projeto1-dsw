@@ -1,8 +1,15 @@
-<jsp:include page="../helpers/header.jsp">
-    <jsp:param name="title" value="Cadastro de usuários"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<jsp:include page="../helpers/header_das_subpasta.jsp">
+    <jsp:param name="title" value="Cadastro de Teatros"/>
+</jsp:include>
+<jsp:include page="../helpers/navbar.jsp">
+    <jsp:param name="active" value="teatros"/>
 </jsp:include>
     <body>
-        <form class="form-horizontal" action="cadastro" method="post">
+    <center>
+        <h1>Cadastro Teatro</h1>
+        <form class="form-horizontal ui form" action="" method="post" style="width: 50%;">
             <fieldset>
 
                  <!-- Form Name -->
@@ -53,9 +60,9 @@
                         </span>
                     </div>
                 </div>
-                 
-                <input type="submit" value="Enviar">
+                 <br>
+                <input type="submit" class="ui positive button" value="Enviar">
             </fieldset>
         </form>
-
+        </center>
 <jsp:include page="../helpers/footer.jsp"/>
