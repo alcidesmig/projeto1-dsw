@@ -63,7 +63,7 @@
             <div>
                 <label for="site_de_venda_email">E-mail do site de vendas</label>  
                 <div >
-                    <select id="site_de_venda_email" name="cnpj_teatro">
+                    <select id="site_de_venda_email" name="site_de_venda_email">
                         <c:forEach var="x" items="${listaSites}">    
                             <option value="<c:out value="${x.email}" />"><c:out value="${x.email}"/> - <c:out value="${x.nome}"/></option> 
                         </c:forEach>

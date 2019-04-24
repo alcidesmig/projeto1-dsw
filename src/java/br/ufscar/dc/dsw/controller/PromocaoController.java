@@ -143,7 +143,7 @@ public class PromocaoController extends HttpServlet {
         String nome_peca = request.getParameter("nome_peca");
         String datetime = request.getParameter("datetime");
         double preco = Double.valueOf(request.getParameter("preco"));
-        String cnpj = request.getParameter("cnp_teatro");
+        String cnpj = request.getParameter("cnpj_teatro");
         System.out.println("CNPJ:" + cnpj);
         String cnpj_teatro = cnpj;
         Promocao promocao = new Promocao(preco, datetime, endereco_url, cnpj_teatro, nome_peca);
