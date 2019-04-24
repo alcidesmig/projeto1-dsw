@@ -10,17 +10,16 @@
 <center>
     <h1><fmt:message key="sala_teatros.title"/></h1>
 </center>
+<br>
 <div align="center">
-    <table border="1" cellpadding="5" id="java_is_terrible" class="ui celled collapsing table" style="width: 80%;">
+    <table border="1" cellpadding="5" id="java_is_terrible" class="ui celled table" style="width: 80%;">
         <caption><h2>Listagem de Salas de Teatro</h2></caption>
-        <button onclick="sortTable()" class="ui button">Ordenar por cidade</button>
         <tr>
-            <th><button onclick="sortTable()" class="ui button positive">Cidade</button></th>
+            <th><button onclick="sortTable()" class="ui labeled icon positive button"> <i class="sort alphabet down icon"></i>Cidade</button></th>
             <th>Email</th>
             <th>CNPJ</th>
             <th>Nome</th>  
         </tr>
-
         <c:forEach var="teatro" items="${listaTeatros}">
             <tr>
                 <td><c:out value="${prom.cidade}" /></td>
