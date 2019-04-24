@@ -2,9 +2,10 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.model.SalaDeTeatro;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
+import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
+import br.ufscar.dc.dsw.model.SiteDeVenda;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,6 +83,8 @@ public class SalaDeTeatroController extends HttpServlet {
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO: Criar templates para SalaDeTeatro
+        List<SiteDeVenda> listaSites = new DAOSiteDeVenda().getAll();
+        request.setAttribute("listaSites", listaSites);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
         dispatcher.forward(request, response);
     }
@@ -93,9 +96,9 @@ public class SalaDeTeatroController extends HttpServlet {
         String cidade = request.getParameter("cidade");
         String senha = request.getParameter("password");
         String nome = request.getParameter("nome");
-        SalaDeTeatro sala = new SalaDeTeatro(email, senha, cnpj, nome, cidade);
+        String site_de_venda_email = request.getParameter("site_de_venda_email");
+        SalaDeTeatro sala = new SalaDeTeatro(email, senha, cnpj, nome, cidade, site_de_venda_email);
         dao.insert(sala);
-        System.out.println("Inserido.");
         response.sendRedirect("lista");
     }
 

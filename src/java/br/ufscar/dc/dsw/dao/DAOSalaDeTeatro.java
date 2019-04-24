@@ -17,8 +17,8 @@ public class DAOSalaDeTeatro extends DBConnection {
         super();
     }
 
-    public boolean insert(SalaDeTeatro teatro) {
-        String sql = "INSERT INTO SalaDeTeatro (email, senha, cnpj, nome, cidade) VALUES (?, ?, ?, ?, ?)";
+    public void insert(SalaDeTeatro teatro) {
+        String sql = "INSERT INTO SalaDeTeatro (email, senha, cnpj, nome, cidade, teatro_email) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -27,19 +27,18 @@ public class DAOSalaDeTeatro extends DBConnection {
             statement.setString(3, teatro.getCnpj());
             statement.setString(4, teatro.getNome());
             statement.setString(5, teatro.getCidade());
+            statement.setString(6, teatro.getSite_de_venda_email());
             statement.executeUpdate();
             statement.close();
             conn.close();
-            return true;
         } catch (SQLException e) {
-            //throw new RuntimeException(e);
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
     public List<SalaDeTeatro> getAll() {
         List<SalaDeTeatro> listaTeatros = new ArrayList<>();
-        String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro";
+        String sql = "SELECT email,cnpj,nome,cidade,teatro_email FROM SalaDeTeatro";
         try {
             Connection conn = this.getConnection();
             Statement statement = conn.createStatement();
@@ -49,7 +48,8 @@ public class DAOSalaDeTeatro extends DBConnection {
                 String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
                 String cidade = resultSet.getString("cidade");
-                SalaDeTeatro teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade);
+                String site_de_venda_email = resultSet.getString("teatro_email");
+                SalaDeTeatro teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade,site_de_venda_email);
                 listaTeatros.add(teatro);
             }
             resultSet.close();
@@ -108,7 +108,8 @@ public class DAOSalaDeTeatro extends DBConnection {
                 String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
                 String cidade = resultSet.getString("cidade");
-                teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade);
+                String site_de_venda_email = resultSet.getString("site_de_venda_email");
+                teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade,site_de_venda_email);
             }
             resultSet.close();
             statement.close();

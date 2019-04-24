@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="../helpers/header_das_subpasta.jsp">
+<jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="Lista de Teatros"/>
 </jsp:include>
 <jsp:include page="../helpers/navbar.jsp">
@@ -19,13 +19,15 @@
             <th>Email</th>
             <th>CNPJ</th>
             <th>Nome</th>  
+            <th>Site de venda (e-mail)</th>  
         </tr>
         <c:forEach var="teatro" items="${listaTeatros}">
             <tr>
-                <td><c:out value="${prom.cidade}" /></td>
-                <td><c:out value="${prom.email}" /></td>
-                <td><c:out value="${prom.cnpj}" /></td>
-                <td><c:out value="${prom.nome}" /></td>
+                <td><c:out value="${teatro.cidade}" /></td>
+                <td><c:out value="${teatro.email}" /></td>
+                <td><c:out value="${teatro.cnpj}" /></td>
+                <td><c:out value="${teatro.nome}" /></td>
+                <td><c:out value="${teatro.site_de_venda_email}" /></td>
             </tr>
         </c:forEach>
     </table>
