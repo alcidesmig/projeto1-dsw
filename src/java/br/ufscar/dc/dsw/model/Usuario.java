@@ -92,15 +92,4 @@ public class Usuario {
     public void setData_criacao(Date data_criacao) {
         this.data_criacao = data_criacao;
     }
-
-    //TODO
-//    public String getToken() {
-//        //return token;
-//    }
-
-    //TODO
-    public void setToken(String token) {
-        //this.token = token;
-    }
-
 }
