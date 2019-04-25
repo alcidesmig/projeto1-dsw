@@ -87,6 +87,7 @@ public class DAOPromocao extends DBConnection {
             statement.setString(3, promocao.getDatetime());
             statement.setString(4, promocao.getEndereco_url());
             statement.setString(5, promocao.getCnpj_teatro());
+            statement.setInt(6, promocao.getId_promocao());
             statement.executeUpdate();
             statement.close();
             conn.close();

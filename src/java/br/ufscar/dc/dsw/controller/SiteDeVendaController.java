@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.model.SiteDeVenda;
 import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
+import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -56,11 +57,23 @@ public class SiteDeVendaController extends HttpServlet {
                 case "cadastro":
                     apresentaFormCadastro(request, response);
                     break;
+                case "gerenciar":
+                    listaGerenciar(request, response);
+                    break;
+                case "edicao_form":
+                    apresentaFormEdicao(request, response);
+                    break;
+                case "edicao":
+                    atualize(request, response);
+                    break;
+                case "remocao":
+                    remove(request, response);
+                    break;
                 case "lista":
                     lista(request, response);
                     break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -70,19 +83,33 @@ public class SiteDeVendaController extends HttpServlet {
         }
     }
 
+    private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, NoSuchAlgorithmException {
+        if (request.getParameter("busca") != null) {
+            List<SiteDeVenda> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
+            request.setAttribute("listaSite", lista);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            List<SiteDeVenda> lista = dao.getAll();
+            request.setAttribute("listaSite", lista);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+    
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
         List<SiteDeVenda> lista = dao.getAll();
-        request.setAttribute("listaUsuario", lista);
-        // TODO: Criar templates para SiteDeVenda
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_usuario/lista.jsp");
+        request.setAttribute("listaSite", lista);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/lista.jsp");
         dispatcher.forward(request, response);
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO: Criar templates para SiteDeVenda
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_usuario/cadastro.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -97,6 +124,46 @@ public class SiteDeVendaController extends HttpServlet {
         dao.insert(sala);
         System.out.println("Inserido.");
         response.sendRedirect("lista");
+    }
+
+    private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        SiteDeVenda site = dao.get(email);
+        request.setAttribute("site", site);
+        request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void atualize(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        request.setCharacterEncoding("UTF-8");
+
+        String email = request.getParameter("email");
+        String url = request.getParameter("url");
+        String telefone = request.getParameter("telefone");
+        String senha = request.getParameter("password");
+        String nome = request.getParameter("nome");
+
+        SiteDeVenda site = new SiteDeVenda(
+                        email,
+                        senha,
+                        url, 
+                        nome,
+                        telefone);
+
+        dao.update(site);
+        response.sendRedirect("listaGerenciar");
+    }
+
+    private void remove(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String email = request.getParameter("email");
+        SiteDeVenda site = new SiteDeVenda(email);
+        dao.delete(site);
+        response.sendRedirect("gerenciar");
     }
 
 }

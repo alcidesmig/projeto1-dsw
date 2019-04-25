@@ -62,7 +62,7 @@ public class DAOSiteDeVenda extends DBConnection {
     }
 
     public boolean delete(SiteDeVenda site) {
-        String sql = "DELETE FROM SalaDeTeatro where email = ?";
+        String sql = "DELETE FROM SiteDeVenda where email = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -97,7 +97,7 @@ public class DAOSiteDeVenda extends DBConnection {
 
     public SiteDeVenda get(String id) {
         SiteDeVenda site = null;
-        String sql = "SELECT email,url,nome,telefone FROM SalaDeTeatro WHERE cnpj = ?";
+        String sql = "SELECT email,url,nome,telefone FROM SiteDeVenda WHERE email = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -117,5 +117,60 @@ public class DAOSiteDeVenda extends DBConnection {
             throw new RuntimeException(e);
         }
         return site;
+    }
+
+    public List<SiteDeVenda> getByName(String nome_peca) {
+        List<SiteDeVenda> listaSite = new ArrayList<>();
+        String sql = "SELECT * FROM SiteDeVenda where nome like '%" + nome_peca + "%'";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                String email = resultSet.getString("email");
+                String senha = resultSet.getString("senha");
+                String url = resultSet.getString("url");
+                String nome = resultSet.getString("nome");
+                String telefone = resultSet.getString("telefone");
+                SiteDeVenda site = new SiteDeVenda(
+                        email,
+                        senha,
+                        url, 
+                        nome,
+                        telefone);
+                listaSite.add(site);
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaSite;
+    }
+
+    public void update(SiteDeVenda site) {
+        String sql = "UPDATE SiteDeVenda SET "
+                + "email = ?,"
+                + "senha = ?,"
+                + " url = ?,"
+                + " nome = ?,"
+                + " telefone = ?";
+        sql += " WHERE email = ?";
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, site.getEmail());
+            statement.setString(2, site.getSenha());
+            statement.setString(3, site.getUrl());
+            statement.setString(4, site.getNome());
+            statement.setString(5, site.getTelefone());
+            statement.setString(6, site.getEmail());
+            statement.executeUpdate();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
