@@ -7,7 +7,7 @@
 <center>
     <h1>Gerenciamento de promoções</h1>
     <h2>
-        <a href="cadastro">Adicione Novo Livro</a>
+        <a href="cadastro">Adicione Nova Promoção</a>
         <a href="lista">Lista de Promocoes</a>
         <div>
             <form action="gerenciar">
