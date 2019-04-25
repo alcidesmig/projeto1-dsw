@@ -1,36 +1,31 @@
 package br.ufscar.dc.dsw.model;
 
+import br.ufscar.dc.dsw.dao.DAOPapel;
+import br.ufscar.dc.dsw.dao.DAOPapelUsuario;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 public class Usuario {
 
     private String email;
     private String nome;
-    private int papel_id;
     private String senha;
     private Date data_criacao;
-    private boolean ativo;
-    private String token;
 
-    public Usuario(String email, String nome, int papel_id, String senha, Date data_criacao) throws NoSuchAlgorithmException {
+    public Usuario(String email, String nome, String senha, Date data_criacao) throws NoSuchAlgorithmException {
         this.email = email;
         this.nome = nome;
-        this.papel_id = papel_id;
         this.senha = senha;
         this.data_criacao = data_criacao;
-        this.ativo = false;
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] encodedhash = digest.digest(email.getBytes(StandardCharsets.UTF_8));
-        this.token = encodedhash.toString();
-        this.ativo = false;
     }
 
     @Override
     public String toString() {
-        return "Usuario{" + "email=" + email + ", nome=" + nome + ", papel_id=" + papel_id + ", senha=" + senha + ", data_criacao=" + data_criacao + ", ativo=" + ativo + ", token=" + token + '}';
+        return "Usuario{" + "email=" + email + ", nome=" + nome + ", senha=" + senha + ", data_criacao=" + data_criacao + '}';
     }
 
     public String getEmail() {
@@ -49,12 +44,37 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public int getPapel_id() {
-        return papel_id;
+    public List<Papel> getPapeis() {
+        DAOPapelUsuario papel_usuario = new DAOPapelUsuario();
+        return papel_usuario.getPapelByUser(this);
     }
 
-    public void setPapel_id(int papel_id) {
-        this.papel_id = papel_id;
+    public void addPapel(Papel papel) throws SQLException {
+        DAOPapel daoPapel = new DAOPapel();
+        List<Papel> list = daoPapel.getAll();
+        boolean exist = false;
+        for(Papel a : list) {
+            if (a.getNome().equalsIgnoreCase(papel.getNome()))
+            {
+                exist = true;
+                papel.setId(a.getId());
+            }
+        }
+        if (!exist) {
+            daoPapel.insert(papel);
+            list = daoPapel.getAll();
+            for(Papel a : list) {
+                if (a.getNome().equalsIgnoreCase(papel.getNome()))
+                    papel.setId(a.getId());
+            }
+        }
+        DAOPapelUsuario papel_usuario = new DAOPapelUsuario();
+        papel_usuario.insert(new PapelUsuario(this.getEmail(), papel.getId()));
+    }
+    
+    public void removePapel(Papel papel) {
+        DAOPapelUsuario papel_usuario = new DAOPapelUsuario();
+        papel_usuario.deletePapel(new PapelUsuario(this.getEmail(), papel.getId()));
     }
 
     public String getSenha() {
@@ -73,20 +93,14 @@ public class Usuario {
         this.data_criacao = data_criacao;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
+    //TODO
+//    public String getToken() {
+//        //return token;
+//    }
 
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
+    //TODO
     public void setToken(String token) {
-        this.token = token;
+        //this.token = token;
     }
 
 }
