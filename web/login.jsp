@@ -31,10 +31,6 @@
                 <br><br>
                 <button type="submit" class="ui positive button"><fmt:message key="login.text.submit_button"/></button>
             </form>
-            <br><br>
-            <div class="ui segment">
-                <fmt:message key="login.register.text"/> <a href=""><fmt:message key="login.register.button"/></a>
-            </div>
         </div>
         <br><br>
     </center>

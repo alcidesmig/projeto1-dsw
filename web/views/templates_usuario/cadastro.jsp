@@ -9,7 +9,7 @@
     <jsp:param name="title" value="cadastro_usuario"/>
 </jsp:include>
 <jsp:include page="../helpers/navbar.jsp">
-    <jsp:param name="active" value="user_create"/>
+    <jsp:param name="active" value="user"/>
 </jsp:include>
 <div class="ui text container">
     <center><h1><fmt:message key="user.cadastro.h1"/></h1></center>
@@ -111,7 +111,7 @@
                 window.location.href="usuario/lista";
             }).fail(function () {
                 form.removeClass('loading');
-                alert("Ocorreu um erro");
+                alert("<fmt:message key="allform.error"/>");
             });
         });
     });
