@@ -21,7 +21,7 @@
             <th>Nome da peça</th>
             <th>Preço</th>
             <th>Endereço (URL)</th>
-            <th>CNPJ do Teatro</th> <!-- Mudar para nome do teatro? -->
+            <th>Nome/CNPJ Teatro</th> <!-- Mudar para nome do teatro? -->
             <th>Data e horário</th> <!-- Mudar para nome do teatro? -->
         </tr>
 

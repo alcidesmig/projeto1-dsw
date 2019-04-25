@@ -49,7 +49,7 @@ public class DAOSalaDeTeatro extends DBConnection {
                 String nome = resultSet.getString("nome");
                 String cidade = resultSet.getString("cidade");
                 String site_de_venda_email = resultSet.getString("teatro_email");
-                SalaDeTeatro teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade,site_de_venda_email);
+                SalaDeTeatro teatro = new SalaDeTeatro(email, "", cnpj, nome, cidade, site_de_venda_email);
                 listaTeatros.add(teatro);
             }
             resultSet.close();
@@ -94,7 +94,6 @@ public class DAOSalaDeTeatro extends DBConnection {
 //            throw new RuntimeException(e);
 //        }
 //    }
-
     public SalaDeTeatro get(String id) {
         SalaDeTeatro teatro = null;
         String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE cnpj = ?";
@@ -108,8 +107,8 @@ public class DAOSalaDeTeatro extends DBConnection {
                 String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
                 String cidade = resultSet.getString("cidade");
-                String site_de_venda_email = resultSet.getString("site_de_venda_email");
-                teatro = new SalaDeTeatro(email,"", cnpj, nome, cidade,site_de_venda_email);
+                String site_de_venda_email = resultSet.getString("email");
+                teatro = new SalaDeTeatro(email, "", cnpj, nome, cidade, site_de_venda_email);
             }
             resultSet.close();
             statement.close();
@@ -119,4 +118,6 @@ public class DAOSalaDeTeatro extends DBConnection {
         }
         return teatro;
     }
+
+
 }

@@ -13,7 +13,7 @@
                 <label for="id_promocao">ID</label>  
                 <div >
                     <input value="<c:out value='${prom.id_promocao}'/>" id="id_promocao" name="id_promocao" type="text" placeholder="" disabled>
-                    <span>Deixe em branco para preenchimento automático</span>        
+                    <span>ID</span>        
                 </div>
             </div>
         </c:if>
