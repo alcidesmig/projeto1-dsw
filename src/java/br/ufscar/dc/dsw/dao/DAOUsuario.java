@@ -19,15 +19,14 @@ public class DAOUsuario extends DBConnection {
     }
 
     public void insert(Usuario usuario) {
-        String sql = "INSERT INTO Usuario (email, nome, papel_id, senha, data_criacao) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Usuario (email, nome, senha, data_criacao) VALUES (?, ?, ?, ?)";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, usuario.getEmail());
             statement.setString(2, usuario.getNome());
-            statement.setInt(3, 1);
-            statement.setString(4, usuario.getSenha());
-            statement.setDate(5, new Date(System.currentTimeMillis()));
+            statement.setString(3, usuario.getSenha());
+            statement.setDate(4, new Date(System.currentTimeMillis()));
             statement.executeUpdate();
             statement.close();
             conn.close();
@@ -46,9 +45,9 @@ public class DAOUsuario extends DBConnection {
             while (resultSet.next()) {
                 String nickname = resultSet.getString("email");
                 String nome = resultSet.getString("nome");
-                int grupo = resultSet.getInt("papel_id");
                 Date data = resultSet.getDate("data_criacao");
-                Usuario usuario = new Usuario(nickname, nome, grupo, "", data);
+                String senha = resultSet.getString("senha");
+                Usuario usuario = new Usuario(nickname, nome, senha, data);
                 listaUsuarios.add(usuario);
             }
             resultSet.close();
@@ -85,10 +84,9 @@ public class DAOUsuario extends DBConnection {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 String nome = resultSet.getString("nome");
-                int grupo = resultSet.getInt("papel_id");
                 String senha = resultSet.getString("senha");
                 Date data = resultSet.getDate("data_criacao");
-                user = new Usuario(nickname, nome, grupo, senha, data);
+                user = new Usuario(nickname, nome, senha, data);
             }
             resultSet.close();
             statement.close();

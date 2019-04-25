@@ -2,9 +2,11 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.model.Usuario;
 import br.ufscar.dc.dsw.dao.DAOUsuario;
+import br.ufscar.dc.dsw.model.Papel;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,8 @@ public class UsuarioController extends HttpServlet {
         } catch (RuntimeException | IOException | ServletException e) {
             throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -84,16 +88,34 @@ public class UsuarioController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException, SQLException {
         request.setCharacterEncoding("UTF-8");
         String nickname = request.getParameter("usuario_id");
         String nome = request.getParameter("name");
-        int papel_id = 0;
         String senha = request.getParameter("password");
-        Usuario user = new Usuario(nickname, nome, papel_id, senha, new Date(System.currentTimeMillis()));
+        String papeis[] = request.getParameter("papeis").split(" ");
+        if (nickname.equals("")) {
+            System.out.println("falha");
+            return;
+        }
+        if (senha.equals("")) {
+            System.out.println("falha");
+            return;
+        }
+        if (nome.equals("")) {
+            System.out.println("falha");
+            return;
+        }
+        if (papeis.length == 0) {
+            System.out.println("falha");
+            return;
+        }
+        Usuario user = new Usuario(nickname, nome, senha, new Date(System.currentTimeMillis()));
         dao.insert(user);
+        for (String a : papeis) {
+            user.addPapel(new Papel(a));
+        }
         System.out.println("Inserido.");
-        response.sendRedirect("lista");
     }
 
 }
