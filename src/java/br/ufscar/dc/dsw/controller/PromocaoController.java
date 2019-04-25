@@ -96,7 +96,7 @@ public class PromocaoController extends HttpServlet {
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
         if (request.getMethod().equals("POST")) {
-            List<Promocao> lista = dao.getByName(request.getParameter("busca"));
+            List<Promocao> lista = dao.getByCnpjTeatro(request.getParameter("busca"));
             request.setAttribute("listaPromocao", lista);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/lista.jsp");
             dispatcher.forward(request, response);

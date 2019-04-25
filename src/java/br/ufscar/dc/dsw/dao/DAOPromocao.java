@@ -1,15 +1,12 @@
 package br.ufscar.dc.dsw.dao;
 
 import br.ufscar.dc.dsw.model.Promocao;
-import br.ufscar.dc.dsw.model.Usuario;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 public class DAOPromocao extends DBConnection {
@@ -50,6 +47,7 @@ public class DAOPromocao extends DBConnection {
                 String datetime = resultSet.getString("datetime");
                 String endereco_url = resultSet.getString("endereco_url");
                 String cnpj_teatro = resultSet.getString("cnpj_teatro");
+                cnpj_teatro = new DAOSalaDeTeatro().get(cnpj_teatro).getNome() + " - " + cnpj_teatro;
                 Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
                 listaPromocao.add(promocao);
             }
@@ -135,6 +133,34 @@ public class DAOPromocao extends DBConnection {
                 String endereco_url = resultSet.getString("endereco_url");
                 nome_peca = resultSet.getString("nome_peca");
                 String cnpj_teatro = resultSet.getString("cnpj_teatro");
+                cnpj_teatro = new DAOSalaDeTeatro().get(cnpj_teatro).getNome() + " - " + cnpj_teatro;
+                Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+                listaPromocao.add(promocao);
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaPromocao;
+    }
+
+    public List<Promocao> getByCnpjTeatro(String cnpj_teatro) {
+        List<Promocao> listaPromocao = new ArrayList<>();
+        String sql = "SELECT * FROM Promocao where cnpj_teatro like '%" + cnpj_teatro + "%'";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                int id_promocao = resultSet.getInt("id_promocao");
+                Double preco = resultSet.getDouble("preco");
+                String datetime = resultSet.getString("datetime");
+                String endereco_url = resultSet.getString("endereco_url");
+                String nome_peca = resultSet.getString("nome_peca");
+                cnpj_teatro = resultSet.getString("cnpj_teatro");
+                cnpj_teatro = new DAOSalaDeTeatro().get(cnpj_teatro).getNome() + " - " + cnpj_teatro;
                 Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
                 listaPromocao.add(promocao);
             }
