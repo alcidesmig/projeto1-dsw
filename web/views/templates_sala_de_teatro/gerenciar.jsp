@@ -5,10 +5,10 @@
 </jsp:include>
 
 <center>
-    <h1>Gerenciamento de promoções</h1>
+    <h1>Gerenciamento de Salas de Teatro</h1>
     <h2>
-        <a href="cadastro">Adicione Nova Promoção</a>
-        <a href="lista">Lista de Promocoes</a>
+        <a href="cadastro">Adicione Nova Sala de Teatro</a>
+        <a href="lista">Lista de Sala de Teatros</a>
         <div>
             <form action="gerenciar">
                 <p>Buscar</p>
@@ -20,7 +20,7 @@
 </center>
 <div align="center">
     <table border="1" cellpadding="5">
-        <caption><h2>Lista de Promoções</h2></caption>
+        <caption><h2>Lista de Salas de Teatro</h2></caption>
         <tr>
             <th>Nome da peça</th>
             <th>Preço</th>
@@ -30,18 +30,18 @@
             <th>Acões</th>
         </tr>
 
-        <c:forEach var="prom" items="${listaPromocao}">
+        <c:forEach var="teatro" items="${listaTeatros}">
             <tr>
-                <td><c:out value="${prom.nome_peca}" /></td>
-                <td><c:out value="${prom.preco}" /></td>
-                <td><c:out value="${prom.endereco_url}" /></td>
-                <td><c:out value="${prom.cnpj_teatro}" /></td>
-                <td><c:out value="${prom.datetime}" /></td>
+                <td><c:out value="${teatro.cidade}" /></td>
+                <td><c:out value="${teatro.email}" /></td>
+                <td><c:out value="${teatro.cnpj}" /></td>
+                <td><c:out value="${teatro.nome}" /></td>
+                <td><c:out value="${teatro.site_de_venda_email}" /></td>
 
                 <td>
-                    <a href="edicao_form?id=<c:out value='${prom.id_promocao}' />">Edição</a>
+                    <a href="edicao_form?id=<c:out value='${teatro.cnpj}' />">Edição</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="remocao?id=<c:out value='${prom.id_promocao}' />"
+                    <a href="remocao?id=<c:out value='${prom.cnpj}' />"
                        onclick="return confirm('Tem certeza de que deseja excluir este item?');">
                         Remoção
                     </a>
