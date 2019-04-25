@@ -2,13 +2,16 @@
 <jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="Cadastro de Promoções"/>
 </jsp:include>
-<c:if test="${prom != null}">
+    <c:if test="${prom != null && editar}">
     <form action="edicao" method="post">
     </c:if>
     <c:if test="${prom == null}">
         <form action="cadastro" method="post">
+    </c:if>
+        <c:if test="${erro != null}">
+            <p><c:out value='${erro}'/></p>
         </c:if>
-        <c:if test="${prom != null}">
+        <c:if test="${prom != null && erro == null}">
             <div>
                 <label for="id_promocao">ID</label>  
                 <div >
@@ -56,7 +59,7 @@
                             </c:when>
                             <c:otherwise>
                                 <option value="<c:out value="${sala.cnpj}" />"><c:out value="${sala.nome}"/> - <c:out value="${sala.cnpj}"/></option> 
-                    -        </c:otherwise>
+                                -        </c:otherwise>
                         </c:choose>
                     </c:forEach>
                 </select>

@@ -4,8 +4,8 @@ import br.ufscar.dc.dsw.dao.DAOPromocao;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
 import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -30,10 +30,11 @@ public class PromocaoController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
-        String action = request.getRequestURI();
-        action = action.split("/")[action.split("/").length - 1];
+            throws ServletException, IOException {
         try {
+            String action = request.getRequestURI();
+            action = action.split("/")[action.split("/").length - 1];
+
             switch (action) {
                 case "cadastro":
                     insere(request, response);
@@ -48,13 +49,10 @@ public class PromocaoController extends HttpServlet {
                     lista(request, response);
                     break;
             }
-        } catch (RuntimeException | IOException | ServletException e) {
-            throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(PromocaoController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(PromocaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     @Override
@@ -143,37 +141,84 @@ public class PromocaoController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException, ParseException {
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        String endereco_url = request.getParameter("endereco_url");
-        String nome_peca = request.getParameter("nome_peca");
-        String datetime = request.getParameter("datetime");
-        double preco = Double.valueOf(request.getParameter("preco"));
-        String cnpj = request.getParameter("cnpj_teatro");
-        String cnpj_teatro = cnpj;
-        Promocao promocao = new Promocao(preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+        try {
+            String endereco_url = request.getParameter("endereco_url");
+            String nome_peca = request.getParameter("nome_peca");
+            String datetime = request.getParameter("datetime");
+            double preco = Double.parseDouble(request.getParameter("preco"));
+            String cnpj = request.getParameter("cnpj_teatro");
+            String cnpj_teatro = cnpj;
+            Promocao promocao = new Promocao(preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+            Boolean cadastra = true;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            sdf.parse(datetime);
+            for (Promocao p : dao.getByCnpjTeatro(cnpj_teatro)) {
+                if (p.getDatetime().equals(datetime)) {
+                    cadastra = false;
+                }
+            }
+            if (!cadastra) {
+                request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
+                request.setAttribute("prom", promocao);
+                request.setAttribute("erro", "Promoção no mesmo horário!");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                dao.insert(promocao);
 
-        dao.insert(promocao);
-
-        response.sendRedirect("lista");
+                response.sendRedirect("lista");
+            }
+        } catch (ParseException | IOException | NumberFormatException | ServletException e) {
+            request.setAttribute("erro", "Erro ao fazer o cadastro! Confira a integridade dos dados.");
+            request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void atualize(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
+        try {
+            String endereco_url = request.getParameter("endereco_url");
+            String nome_peca = request.getParameter("nome_peca");
+            String datetime = String.valueOf(request.getParameter("datetime"));
+            int id_promocao = Integer.valueOf(request.getParameter("id_promocao"));
+            double preco = Double.valueOf(request.getParameter("preco"));
+            String cnpj_teatro = (request.getParameter("cnp_teatro"));
 
-        String endereco_url = request.getParameter("endereco_url");
-        String nome_peca = request.getParameter("nome_peca");
-        String datetime = String.valueOf(request.getParameter("datetime"));
-        int id_promocao = Integer.valueOf(request.getParameter("id_promocao"));
-        double preco = Double.valueOf(request.getParameter("preco"));
-        String cnpj_teatro = (request.getParameter("cnp_teatro"));
+            Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
 
-        Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            sdf.parse(datetime);
+            Boolean cadastra = true;
 
-        dao.update(promocao);
-        response.sendRedirect("listaGerenciar");
+            for (Promocao p : dao.getByCnpjTeatro(cnpj_teatro)) {
+                if (p.getDatetime().equals(datetime)) {
+                    cadastra = false;
+                }
+            }
+            if (!cadastra) {
+                request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
+                request.setAttribute("prom", promocao);
+                request.setAttribute("erro", "Promoção no mesmo horário!");
+                request.setAttribute("editar", true);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/edicao.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                dao.update(promocao);
+                response.sendRedirect("listaGerenciar");
+            }
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao fazer o cadastro! Confira a integridade dos dados.");
+            request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
+            request.setAttribute("editar", true);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/edicao.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void remove(HttpServletRequest request, HttpServletResponse response)
