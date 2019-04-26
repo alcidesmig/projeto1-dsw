@@ -85,19 +85,26 @@ public class SiteDeVendaController extends HttpServlet {
 
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        if (request.getParameter("busca") != null) {
-            List<SiteDeVenda> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
-            request.setAttribute("listaSite", lista);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
-            dispatcher.forward(request, response);
+        if (new AuthController().hasRole(request, "admin")) {
+
+            if (request.getParameter("busca") != null) {
+                List<SiteDeVenda> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
+                request.setAttribute("listaSite", lista);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                List<SiteDeVenda> lista = dao.getAll();
+                request.setAttribute("listaSite", lista);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+                dispatcher.forward(request, response);
+            }
         } else {
-            List<SiteDeVenda> lista = dao.getAll();
-            request.setAttribute("listaSite", lista);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+            request.setAttribute("erro", 403);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/erro.jsp");
             dispatcher.forward(request, response);
         }
     }
-    
+
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
         List<SiteDeVenda> lista = dao.getAll();
@@ -107,10 +114,17 @@ public class SiteDeVendaController extends HttpServlet {
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NoSuchAlgorithmException {
         // TODO: Criar templates para SiteDeVenda
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
-        dispatcher.forward(request, response);
+        if (new AuthController().hasRole(request, "admin")) {
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            request.setAttribute("erro", 403);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/erro.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
@@ -148,11 +162,11 @@ public class SiteDeVendaController extends HttpServlet {
         String nome = request.getParameter("nome");
 
         SiteDeVenda site = new SiteDeVenda(
-                        email,
-                        senha,
-                        url, 
-                        nome,
-                        telefone);
+                email,
+                senha,
+                url,
+                nome,
+                telefone);
 
         dao.update(site);
         response.sendRedirect("listaGerenciar");

@@ -81,12 +81,15 @@ public class SalaDeTeatroController extends HttpServlet {
     }
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NoSuchAlgorithmException {
         // TODO: Criar templates para SalaDeTeatro
-        List<SiteDeVenda> listaSites = new DAOSiteDeVenda().getAll();
-        request.setAttribute("listaSites", listaSites);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
-        dispatcher.forward(request, response);
+        if (new AuthController().hasRole(request, "admin")) {
+            List<SiteDeVenda> listaSites = new DAOSiteDeVenda().getAll();
+            request.setAttribute("listaSites", listaSites);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
+            dispatcher.forward(request, response);
+        } else {
+        }
     }
 
     private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
