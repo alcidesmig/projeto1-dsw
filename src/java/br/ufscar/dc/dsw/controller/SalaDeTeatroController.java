@@ -2,8 +2,6 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.model.SalaDeTeatro;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
-import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
-import br.ufscar.dc.dsw.model.SiteDeVenda;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -33,13 +31,21 @@ public class SalaDeTeatroController extends HttpServlet {
         action = action.split("/")[action.split("/").length - 1];
         try {
             switch (action) {
+               
                 case "cadastro":
                     insere(request, response);
                     break;
+                case "lista":
+                    lista(request, response);
+                    break;
+                case "gerenciar":
+                    listaGerenciar(request, response);
+                    break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
+
         } catch (RuntimeException | IOException | ServletException e) {
             throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
@@ -57,11 +63,23 @@ public class SalaDeTeatroController extends HttpServlet {
                 case "cadastro":
                     apresentaFormCadastro(request, response);
                     break;
+                case "gerenciar":
+                    listaGerenciar(request, response);
+                    break;
+                case "edicao_form":
+                    apresentaFormEdicao(request, response);
+                    break;
+                case "edicao":
+                    atualize(request, response);
+                    break;
+                case "remocao":
+                    remove(request, response);
+                    break;
                 case "lista":
                     lista(request, response);
                     break;
                 default:
-                    apresentaFormCadastro(request, response);
+                    lista(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -84,8 +102,8 @@ public class SalaDeTeatroController extends HttpServlet {
             throws ServletException, IOException, NoSuchAlgorithmException {
         // TODO: Criar templates para SalaDeTeatro
         if (new AuthController().hasRole(request, "admin")) {
-            List<SiteDeVenda> listaSites = new DAOSiteDeVenda().getAll();
-            request.setAttribute("listaSites", listaSites);
+            List<SalaDeTeatro> listaSites = new DAOSalaDeTeatro().getAll();
+            request.setAttribute("listaTeatros", listaSites);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -105,6 +123,67 @@ public class SalaDeTeatroController extends HttpServlet {
         SalaDeTeatro sala = new SalaDeTeatro(email, senha, cnpj, nome, cidade, site_de_venda_email);
         dao.insert(sala);
         response.sendRedirect("lista");
+    }
+
+    private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, NoSuchAlgorithmException {
+        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao")) {
+
+            if (request.getParameter("busca") != null) {
+                List<SalaDeTeatro> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
+                request.setAttribute("lista", lista);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/gerenciar.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                List<SalaDeTeatro> lista = dao.getAll();
+                request.setAttribute("listaTeatros", lista);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/gerenciar.jsp");
+                dispatcher.forward(request, response);
+            }
+        } else {
+            response.sendRedirect("/403.jsp");
+        }
+    }
+
+    private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+      
+        SalaDeTeatro teatro = dao.get(request.getParameter("id"));
+        request.setAttribute("teatro", teatro);
+        request.setAttribute("listaTeatros", new DAOSalaDeTeatro().getAll());
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void atualize(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        request.setCharacterEncoding("UTF-8");
+        try {
+            String email = request.getParameter("email");
+            String cnpj = request.getParameter("cnpj");
+            String cidade = request.getParameter("cidade");
+            String senha = request.getParameter("password");
+            String nome = request.getParameter("nome");
+            String site_de_venda_email = request.getParameter("site_de_venda_email");
+            SalaDeTeatro sala = new SalaDeTeatro(email, senha, cnpj, nome, cidade, site_de_venda_email);
+            dao.update(sala);
+            response.sendRedirect("listaGerenciar");
+            
+            }
+            catch (Exception e) {
+            request.setAttribute("erro", "Erro ao fazer o cadastro! Confira a integridade dos dados.");
+            request.setAttribute("listaTeatros", new DAOSalaDeTeatro().getAll());
+            request.setAttribute("editar", true);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/edicao.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
+    private void remove(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        dao.delete(request.getParameter("cnpj"));
+        response.sendRedirect("gerenciar");
     }
 
 }

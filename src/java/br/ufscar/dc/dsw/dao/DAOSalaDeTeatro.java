@@ -61,12 +61,11 @@ public class DAOSalaDeTeatro extends DBConnection {
         return listaTeatros;
     }
 
-    public boolean delete(SalaDeTeatro teatro) {
-        String sql = "DELETE FROM SalaDeTeatro where cnpj = ?";
+    public boolean delete(String teatro) {
+        String sql = "DELETE FROM SalaDeTeatro where cnpj = "+teatro;
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, teatro.getCnpj());
             statement.executeUpdate();
             statement.close();
             conn.close();
@@ -119,5 +118,53 @@ public class DAOSalaDeTeatro extends DBConnection {
         return teatro;
     }
 
+    public List<SalaDeTeatro> getByName(String nome_peca) {
+           List<SalaDeTeatro> listaPromocao = new ArrayList<>();
+           String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE nome like %?%";
+           try {
+               Connection conn = this.getConnection();
+               Statement statement = conn.createStatement();
+               ResultSet resultSet = statement.executeQuery(sql);
+               while (resultSet.next()) {
+                    String email = resultSet.getString("email");
+                    String cnpj = resultSet.getString("cnpj");
+                    String nome = resultSet.getString("nome");
+                    String cidade = resultSet.getString("cidade");                 
+                   listaPromocao.add(new SalaDeTeatro(email,"",cnpj,nome,cidade,""));
+               }
+               resultSet.close();
+               statement.close();
+               conn.close();
+           } catch (SQLException e) {
+               throw new RuntimeException(e);
+           }
+           return listaPromocao;
+       }
+
+     public void update(SalaDeTeatro sala) {
+        String sql = "UPDATE SalaDeTeatro SET cnpj = ?,"
+                + " email = ?,"
+                + " senha = ?,"
+                + " nome = ?,"
+                + " cidade = ?,"
+                + " teatro_email = ?";
+        sql += " WHERE cnpj = ?";
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, sala.getCnpj());
+            statement.setString(2, sala.getEmail());
+            statement.setString(3, sala.getSenha());
+            statement.setString(4, sala.getNome());
+            statement.setString(5, sala.getCidade());
+            statement.setString(6, sala.getSite_de_venda_email());
+            statement.setString(7, sala.getCnpj());
+            statement.executeUpdate();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
