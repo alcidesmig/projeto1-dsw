@@ -107,9 +107,7 @@ public class PromocaoController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            request.setAttribute("erro", 403);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/erro.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("/403.jsp");
         }
 
     }
@@ -130,8 +128,7 @@ public class PromocaoController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            response.sendRedirect("lista");
-
+            response.sendRedirect("/403.jsp");
         }
     }
 

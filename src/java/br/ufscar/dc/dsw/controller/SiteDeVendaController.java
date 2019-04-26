@@ -99,9 +99,7 @@ public class SiteDeVendaController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            request.setAttribute("erro", 403);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/erro.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("/403.jsp");
         }
     }
 
@@ -120,9 +118,8 @@ public class SiteDeVendaController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
             dispatcher.forward(request, response);
         } else {
-            request.setAttribute("erro", 403);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/erro.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("/403.jsp");
+
         }
     }
 

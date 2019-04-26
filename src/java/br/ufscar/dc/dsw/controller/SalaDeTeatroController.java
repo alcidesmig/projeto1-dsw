@@ -89,6 +89,8 @@ public class SalaDeTeatroController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
             dispatcher.forward(request, response);
         } else {
+            response.sendRedirect("/403.jsp");
+
         }
     }
 
