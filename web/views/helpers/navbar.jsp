@@ -1,3 +1,4 @@
+<%@page import="br.ufscar.dc.dsw.model.Usuario"%>
 <%@page import="br.ufscar.dc.dsw.controller.AuthController"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,6 +9,7 @@
 
 <% 
     String active = request.getParameter("active"); 
+    Usuario user = AuthController.getUser(request);
 %>
 
 <div class="ui inverted top fixed big menu">
@@ -28,19 +30,19 @@
         <% } %>
         
         <div class="right menu">
+            <% if (user == null) { %>
             <a class="
                <% if(active.equalsIgnoreCase("login")) out.print("active");%>
                item" href="/projeto1_dsw/login.jsp">
                 <fmt:message key="navbar.item.login"/>
             </a>
+            <% } else { %>
+            <a class="item"><%= user.getNome() %></a>
+            <a class="item" href="/projeto1_dsw/auth/">
+                <fmt:message key="navbar.item.logout"/>
+            </a>
+            <% } %>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $('#user').popup({
-            popup: '',  
-        });
-    });
-</script>
 <div style="height: 45.7px; margin-bottom: 20px;"></div>

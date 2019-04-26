@@ -29,7 +29,13 @@ public class UsuarioController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
+            throws ServletException, IOException {
+        try {
+            if ( !AuthController.canAccess(request, response, "administrador") )
+                return;
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String action = request.getRequestURI();
         action = action.split("/")[action.split("/").length - 1];
         try {
@@ -52,7 +58,13 @@ public class UsuarioController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
+            throws ServletException, IOException {
+        try {
+            if ( !AuthController.canAccess(request, response, "administrador") )
+                return ;
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String action = request.getRequestURI();
         action = action.split("/")[action.split("/").length - 1];
         try {

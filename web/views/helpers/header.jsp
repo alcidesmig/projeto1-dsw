@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta charset="UTF-8"/>
         <title><fmt:message key="title.${ param.title }"/></title>
-        <link rel="icon" href="favicon.ico" type="/projeto1_dsw/ricardo.ico"/>
+        <link rel="icon" href="/projeto1_dsw/ricardo.ico" type="favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="/projeto1_dsw/semantic/semantic.css">
         <link rel="stylesheet" type="text/css" href="/projeto1_dsw/custom-css/style.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"

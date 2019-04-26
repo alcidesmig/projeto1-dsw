@@ -44,8 +44,7 @@ public class DAOPapelUsuario extends DBConnection {
     
     public List<Papel> getPapelByUser(Usuario user) {
         List<Papel> listaPapelUsuario = new ArrayList<>();
-        String sql = "SELECT Papel.nome as papel FROM papel_usuario WHERE usuario = ? "
-                + "LEFT JOIN Papel on Papel.id = papel ";
+        String sql = "SELECT Papel.nome as papel FROM papel_usuario LEFT JOIN Papel ON Papel.id = papel WHERE usuario = ? ";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
