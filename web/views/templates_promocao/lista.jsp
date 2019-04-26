@@ -12,7 +12,7 @@
         <caption><h2>Listagem de Promoções</h2></caption>
         <div>
             <form action="lista" method="POST">
-                <p>Buscar</p>
+                <p>Buscar por teatro</p>
                 <input type="text" id="busca" name="busca"/>
                 <input type="submit">
             </form>

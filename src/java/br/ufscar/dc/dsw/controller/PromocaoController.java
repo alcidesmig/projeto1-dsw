@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.DAOPromocao;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
+import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
 import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -125,6 +126,7 @@ public class PromocaoController extends HttpServlet {
 
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("listaUrl", new DAOSiteDeVenda().getAll());
         request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
         dispatcher.forward(request, response);
@@ -134,7 +136,9 @@ public class PromocaoController extends HttpServlet {
             throws ServletException, IOException {
         int id = Integer.valueOf(request.getParameter("id"));
         Promocao prom = dao.get(id);
+
         request.setAttribute("prom", prom);
+        request.setAttribute("listaUrl", new DAOSiteDeVenda().getAll());
         request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
@@ -202,6 +206,7 @@ public class PromocaoController extends HttpServlet {
                 }
             }
             if (!cadastra) {
+                request.setAttribute("listaUrl", new DAOSiteDeVenda().getAll());
                 request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
                 request.setAttribute("prom", promocao);
                 request.setAttribute("erro", "Promoção no mesmo horário!");

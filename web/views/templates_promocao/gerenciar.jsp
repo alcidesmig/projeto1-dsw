@@ -11,7 +11,7 @@
         <a href="lista">Lista de Promocoes</a>
         <div>
             <form action="gerenciar">
-                <p>Buscar</p>
+                <p>Buscar por nome</p>
                 <input type="text" id="busca" name="busca"/>
                 <input type="submit">
             </form>

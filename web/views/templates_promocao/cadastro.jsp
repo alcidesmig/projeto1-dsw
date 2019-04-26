@@ -2,12 +2,12 @@
 <jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="Cadastro de Promoções"/>
 </jsp:include>
-    <c:if test="${prom != null && editar}">
+<c:if test="${prom != null && editar}">
     <form action="edicao" method="post">
     </c:if>
     <c:if test="${prom == null}">
         <form action="cadastro" method="post">
-    </c:if>
+        </c:if>
         <c:if test="${erro != null}">
             <p><c:out value='${erro}'/></p>
         </c:if>
@@ -44,7 +44,11 @@
         <div>
             <label for="endereco_url">Endereço (URL)</label>  
             <div >
-                <input value="<c:out value='${prom.endereco_url}'/>" id="endereco_url" name="endereco_url" type="text" placeholder="https://www.example.dev" required="">
+                <select id="endereco_url" name="endereco_url">
+                    <c:forEach var="end" items="${listaUrl}">    
+                            <option value="<c:out value="${end.email}" />"><c:out value="${end.email}"/></option> 
+                    </c:forEach>
+                </select>              
                 <span>Endereço da promoção</span>        
             </div>
         </div>
