@@ -117,7 +117,6 @@ public class SiteDeVendaController extends HttpServlet {
             throws ServletException, IOException, NoSuchAlgorithmException {
         // TODO: Criar templates para SiteDeVenda
         if (new AuthController().hasRole(request, "admin")) {
-
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -127,28 +126,48 @@ public class SiteDeVendaController extends HttpServlet {
         }
     }
 
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
-        request.setCharacterEncoding("UTF-8");
-        String email = request.getParameter("email");
-        String url = request.getParameter("url");
-        String telefone = request.getParameter("telefone");
-        String senha = request.getParameter("password");
-        String nome = request.getParameter("nome");
-        SiteDeVenda sala = new SiteDeVenda(email, senha, url, nome, telefone);
-        dao.insert(sala);
-        System.out.println("Inserido.");
-        response.sendRedirect("lista");
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException, ServletException {
+        SiteDeVenda site = null;
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String email = request.getParameter("email");
+            String url = request.getParameter("url");
+            String telefone = request.getParameter("telefone");
+            String senha = request.getParameter("password");
+            String nome = request.getParameter("nome");
+            site = new SiteDeVenda(email, senha, url, nome, telefone);
+            dao.insert(site);
+            System.out.println("Inserido.");
+            response.sendRedirect("lista");
+        } catch (Exception e) {
+            request.setAttribute("site", site);
+            request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
+            request.setAttribute("erro", "Erro ao salvar os dados!");
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        SiteDeVenda site = dao.get(email);
-        request.setAttribute("site", site);
-        request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
+        SiteDeVenda site = null;
+        try {
+            String email = request.getParameter("email");
+            site = dao.get(email);
+            request.setAttribute("site", site);
+            request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("site", site);
+            request.setAttribute("erro", "Erro ao salvar os dados!");
+            request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
+            request.setAttribute("editando", true);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
-        dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void atualize(HttpServletRequest request, HttpServletResponse response)

@@ -9,17 +9,24 @@
 <body>
 <center>
     <h1>Cadastro Site de Venda</h1>
-    <form class="form-horizontal ui form" action="cadastro" method="post" style="width: 50%;">
+     <c:if test="${editando}">
+        <form class="form-horizontal ui form" action="edicao" method="post" style="width: 50%;">
+    </c:if>
+    <c:if test="${!editando || editando == null}">
+        <form class="form-horizontal ui form" action="cadastro" method="post" style="width: 50%;">
+    </c:if>
         <fieldset>
 
             <!-- Form Name -->
             <legend><fmt:message key="cadastro.site_de_venda.form_title"/></legend>
-
+            <c:if test="${erro != null}">
+                <p><c:out value='${erro}'/></p>
+            </c:if>
             <!-- Text input-->
             <div>
                 <label for="site_de_venda_email">Email</label>  
                 <div>
-                    <input id="site_de_venda_email" name="email" type="text" placeholder="example@gmail.com" required="True">
+                    <input value="<c:out value='${site.email}'/>" id="site_de_venda_email" name="email" type="text" placeholder="example@gmail.com" required="True">
                     <span class="help-block"><fmt:message key="cadastro.sala_de_teatro.form_help_email"/></span>        
                 </div>
             </div>
@@ -37,7 +44,7 @@
             <div>
                 <label for="nome">Nome</label>  
                 <div>
-                    <input id="nome" name="nome" type="text" placeholder="Example" required="">
+                    <input  value="<c:out value='${site.nome}'/>" id="nome" name="nome" type="text" placeholder="Example" required="">
                     <span class="help-block"><fmt:message key="cadastro.sala_de_teatro.form_help_nome"/>
                     </span>
                 </div>
@@ -46,7 +53,7 @@
             <div>
                 <label for="cnpj">URL</label>  
                 <div>
-                    <input id="cnpj" name="url" type="text" placeholder="Example" required="">
+                    <input  value="<c:out value='${site.url}'/>" id="url" name="url" type="text" placeholder="Example" required="">
                     <span class="help-block"><fmt:message key="cadastro.site_de_venda.form_help_url"/>
                     </span>
                 </div>
@@ -55,7 +62,7 @@
             <div>
                 <label for="cidade">Telefone</label>  
                 <div>
-                    <input id="cidade" name="telefone" type="text" placeholder="Example" required="">
+                    <input  value="<c:out value='${site.telefone}'/>" id="cidade" name="telefone" type="text" placeholder="Example" required="">
                     <span class="help-block"><fmt:message key="cadastro.sala_de_teatro.form_help_cidade"/>
                     </span>
                 </div>
