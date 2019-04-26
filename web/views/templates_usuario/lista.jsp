@@ -1,8 +1,14 @@
+<%@page import="br.ufscar.dc.dsw.controller.AuthController"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="br.ufscar.dc.dsw.i18n.text" />
 <c:set var="laguage" value="${pageContext.response.locale}"/>
 <fmt:setLocale value="${language}"/>
+
+<%             
+    if ( !AuthController.canAccess(request, response, "administrador") )
+        return ; 
+%>
 
 <jsp:include page="../helpers/header.jsp">
     <jsp:param name="title" value="user_list"/>

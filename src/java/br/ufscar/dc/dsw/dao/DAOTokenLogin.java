@@ -24,7 +24,7 @@ public class DAOTokenLogin extends DBConnection {
     }
     
     public void insert(TokenLogin token) throws NoSuchAlgorithmException {
-        String sql = "INSERT INTO token_login (token, usuario, date) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO token_login (token, usuario, data_login) VALUES (?, ?, ?)";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);

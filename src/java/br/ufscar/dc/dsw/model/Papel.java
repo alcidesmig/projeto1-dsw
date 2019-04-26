@@ -9,7 +9,7 @@ package br.ufscar.dc.dsw.model;
  *
  * @author igor
  */
-public class Papel {
+public class Papel implements Comparable<Papel> {
     private int id;
     private String nome;
 
@@ -31,5 +31,10 @@ public class Papel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public int compareTo(Papel o) {
+        return this.getNome().compareToIgnoreCase(o.getNome());
     }
 }
