@@ -86,7 +86,6 @@ public class SiteDeVendaController extends HttpServlet {
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
         if (new AuthController().hasRole(request, "admin")) {
-
             if (request.getParameter("busca") != null) {
                 List<SiteDeVenda> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
                 request.setAttribute("listaSite", lista);

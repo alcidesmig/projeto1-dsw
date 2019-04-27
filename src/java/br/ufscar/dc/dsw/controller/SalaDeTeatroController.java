@@ -1,9 +1,17 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.dao.DAOPapel;
+import br.ufscar.dc.dsw.dao.DAOPapelUsuario;
 import br.ufscar.dc.dsw.model.SalaDeTeatro;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
+import br.ufscar.dc.dsw.dao.DAOUsuario;
+import br.ufscar.dc.dsw.model.Papel;
+import br.ufscar.dc.dsw.model.PapelUsuario;
+import br.ufscar.dc.dsw.model.Usuario;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +39,7 @@ public class SalaDeTeatroController extends HttpServlet {
         action = action.split("/")[action.split("/").length - 1];
         try {
             switch (action) {
-               
+
                 case "cadastro":
                     insere(request, response);
                     break;
@@ -112,7 +120,7 @@ public class SalaDeTeatroController extends HttpServlet {
         }
     }
 
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException, SQLException {
         request.setCharacterEncoding("UTF-8");
         String email = request.getParameter("email");
         String cnpj = request.getParameter("cnpj");
@@ -120,6 +128,19 @@ public class SalaDeTeatroController extends HttpServlet {
         String senha = request.getParameter("password");
         String nome = request.getParameter("nome");
         String site_de_venda_email = request.getParameter("site_de_venda_email");
+        Usuario user = new Usuario(email, nome, senha, new Date(System.currentTimeMillis()));
+        new DAOUsuario().insert(user);
+        Papel p = new Papel("gerenciar_promocao");
+        List<Papel> lista = new DAOPapel().getAll();
+        if (!lista.contains(p)) {
+            new DAOPapel().insert(p);
+        }
+        for (Papel x : new DAOPapel().getAll()) {
+            if (x.getNome().equals("gerenciar_promocao")) {
+                new DAOPapelUsuario().insert(new PapelUsuario(email,x.getId()));
+                break;
+            }
+        }
         SalaDeTeatro sala = new SalaDeTeatro(email, senha, cnpj, nome, cidade, site_de_venda_email);
         dao.insert(sala);
         response.sendRedirect("lista");
@@ -147,7 +168,7 @@ public class SalaDeTeatroController extends HttpServlet {
 
     private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+
         SalaDeTeatro teatro = dao.get(request.getParameter("id"));
         request.setAttribute("teatro", teatro);
         request.setAttribute("listaTeatros", new DAOSalaDeTeatro().getAll());
@@ -169,9 +190,8 @@ public class SalaDeTeatroController extends HttpServlet {
             SalaDeTeatro sala = new SalaDeTeatro(email, senha, cnpj, nome, cidade, site_de_venda_email);
             dao.update(sala);
             response.sendRedirect("listaGerenciar");
-            
-            }
-            catch (Exception e) {
+
+        } catch (Exception e) {
             request.setAttribute("erro", "Erro ao fazer o cadastro! Confira a integridade dos dados.");
             request.setAttribute("listaTeatros", new DAOSalaDeTeatro().getAll());
             request.setAttribute("editar", true);

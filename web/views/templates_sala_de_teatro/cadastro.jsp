@@ -7,7 +7,7 @@
     <jsp:param name="active" value="teatros"/>
 </jsp:include>
 <body>
-<center>
+<center>qwa
     <h1>Cadastro Teatro</h1>
     <form class="form-horizontal ui form" action="cadastro" method="post" style="width: 50%;">
         <fieldset>
