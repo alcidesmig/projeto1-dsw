@@ -62,10 +62,11 @@ public class DAOSalaDeTeatro extends DBConnection {
     }
 
     public boolean delete(String teatro) {
-        String sql = "DELETE FROM SalaDeTeatro where cnpj = "+teatro;
+        String sql = "DELETE FROM SalaDeTeatro where cnpj = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, teatro);
             statement.executeUpdate();
             statement.close();
             conn.close();

@@ -33,12 +33,28 @@ public class SalaDeTeatroController extends HttpServlet {
             switch (action) {
                
                 case "cadastro":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     insere(request, response);
                     break;
                 case "lista":
                     lista(request, response);
                     break;
                 case "gerenciar":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     listaGerenciar(request, response);
                     break;
                 default:
@@ -61,18 +77,58 @@ public class SalaDeTeatroController extends HttpServlet {
         try {
             switch (action) {
                 case "cadastro":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     apresentaFormCadastro(request, response);
                     break;
                 case "gerenciar":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     listaGerenciar(request, response);
                     break;
                 case "edicao_form":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     apresentaFormEdicao(request, response);
                     break;
                 case "edicao":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     atualize(request, response);
                     break;
                 case "remocao":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
                     remove(request, response);
                     break;
                 case "lista":

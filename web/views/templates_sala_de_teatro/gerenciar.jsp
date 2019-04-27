@@ -1,54 +1,102 @@
+<%@page import="br.ufscar.dc.dsw.controller.AuthController"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="br.ufscar.dc.dsw.i18n.text" />
+<c:set var="laguage" value="${pageContext.response.locale}"/>
+<fmt:setLocale value="${language}"/>
 
-<jsp:include page="../helpers/header.jsp">
-    <jsp:param name="title" value="Gerenciamento de promoções"/>
+<%             
+    if ( !AuthController.canAccess(request, response, "admin") )
+        return ; 
+%>
+
+<jsp:include page="/views/helpers/header.jsp">
+    <jsp:param name="title" value="teatros_gerenciar"/>
 </jsp:include>
+<jsp:include page="/views/helpers/navbar.jsp">
+    <jsp:param name="active" value="nothing"/>
+</jsp:include>
+<div class="ui container">
 
-<center>
-    <h1>Gerenciamento de Salas de Teatro</h1>
-    <h2>
-        <a href="cadastro">Adicione Nova Sala de Teatro</a>
-        <a href="lista">Lista de Sala de Teatros</a>
-        <div>
-            <form action="gerenciar">
-                <p>Buscar</p>
-                <input type="text" id="busca" name="busca"/>
-                <input type="submit">
-            </form>
+    <center>
+        <h1><fmt:message key="teatro.gerenciamento.h1"/></h1>
+    </center>
+    <br>
+    <div style="float: right">
+        <div class="ui icon input">
+            <input type="text" id="java_is_horrible" onkeyup="filter()">
+            <i class="search icon"></i>
         </div>
-    </h2>
-</center>
-<div align="center">
-    <table border="1" cellpadding="5">
-        <caption><h2>Lista de Salas de Teatro</h2></caption>
-        <tr>
-            <th>Nome da peça</th>
-            <th>Preço</th>
-            <th>Endereço (URL)</th>
-            <th>CNPJ do Teatro</th> <!-- Mudar para nome do teatro? -->
-            <th>Data e horário</th>
-            <th>Acões</th>
-        </tr>
-
-        <c:forEach var="teatro" items="${listaTeatros}">
+        <a class="ui positive button" href="cadastro"><i class="plus icon" style="margin-left: 5px"></i></a>
+    </div>
+    
+    <br>
+    <br>
+    
+    <table id="java_is_terrible" class="ui sortable celled table">
+        <thead>
             <tr>
-                <td><c:out value="${teatro.cidade}" /></td>
-                <td><c:out value="${teatro.email}" /></td>
-                <td><c:out value="${teatro.cnpj}" /></td>
-                <td><c:out value="${teatro.nome}" /></td>
-                <td><c:out value="${teatro.site_de_venda_email}" /></td>
-
-                <td>
-                    <a href="edicao_form?id=<c:out value='${teatro.cnpj}' />">Edição</a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="remocao?id=<c:out value='${prom.cnpj}' />"
-                       onclick="return confirm('Tem certeza de que deseja excluir este item?');">
-                        Remoção
-                    </a>
-                </td>
-            </tr>
-        </c:forEach>
+                <th><fmt:message key="teatro.list.cidade"/></th>
+                <th><fmt:message key="teatro.list.email"/></th>
+                <th><fmt:message key="teatro.list.cnpj"/></th>
+                <th><fmt:message key="teatro.list.nome"/></th>
+                <th><fmt:message key="teatro.list.email_vendas"/></th>
+                <th><fmt:message key="teatro.list.actions"/></th>
+            </tr> 
+        </thead>
+        <tbody>
+            <c:forEach var="teatro" items="${listaTeatros}">
+                <tr>
+                    <td><c:out value="${teatro.cidade}" /></td>
+                    <td><c:out value="${teatro.email}" /></td>
+                    <td><c:out value="${teatro.cnpj}" /></td>
+                    <td><c:out value="${teatro.nome}" /></td>
+                    <td><c:out value="${teatro.site_de_venda_email}" /></td>
+                    <td>
+                        <a href="edicao_form?id=<c:out value='${teatro.cnpj}' />">Edição</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="remocao?cnpj=<c:out value='${teatro.cnpj}' />"
+                           onclick="return confirm('<fmt:message key="allform.excluir"/>');">
+                            Remoção
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
     </table>
 </div>
+<script>
+    $(document).ready(function () {
+        $('table').tablesort();
+    });
+    
+function hasInTd(filter, td) {
+    txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          return true;
+      }
+      return false;
+}
 
-<jsp:include page="../helpers/footer.jsp"/>
+function filter() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("java_is_horrible");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("java_is_terrible");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    tds = tr[i].getElementsByTagName("td");
+    if (tds.length) {
+        tr[i].style.display = "none";
+    }
+    for (j = 0; j < tds.length; j++) {
+        td = tds[j];
+        if (hasInTd(filter, td)) {
+            tr[i].style.display = "";
+        }
+    }       
+  }
+}
+
+</script>
+<jsp:include page="/views/helpers/footer.jsp"/>
