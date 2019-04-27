@@ -119,9 +119,62 @@ public class DAOPromocao extends DBConnection {
         return promocao;
     }
 
+    public List<Promocao> getByUser(String teatro) {
+        List<Promocao> listaPromocao = new ArrayList<>();
+        String sql = "SELECT * FROM Promocao where cnpj_teatro = '" + new DAOSalaDeTeatro().getByName(teatro).get(0).getCnpj() + "'";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                int id_promocao = resultSet.getInt("id_promocao");
+                Double preco = resultSet.getDouble("preco");
+                String datetime = resultSet.getString("datetime");
+                String endereco_url = resultSet.getString("endereco_url");
+                teatro = resultSet.getString("nome_peca");
+                String cnpj_teatro = resultSet.getString("cnpj_teatro");
+                cnpj_teatro = new DAOSalaDeTeatro().get(cnpj_teatro).getNome() + " - " + cnpj_teatro;
+                Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, teatro);
+                listaPromocao.add(promocao);
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaPromocao;
+    }
+
     public List<Promocao> getByName(String nome_peca) {
         List<Promocao> listaPromocao = new ArrayList<>();
         String sql = "SELECT * FROM Promocao where nome_peca like '%" + nome_peca + "%'";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                int id_promocao = resultSet.getInt("id_promocao");
+                Double preco = resultSet.getDouble("preco");
+                String datetime = resultSet.getString("datetime");
+                String endereco_url = resultSet.getString("endereco_url");
+                nome_peca = resultSet.getString("nome_peca");
+                String cnpj_teatro = resultSet.getString("cnpj_teatro");
+                cnpj_teatro = new DAOSalaDeTeatro().get(cnpj_teatro).getNome() + " - " + cnpj_teatro;
+                Promocao promocao = new Promocao(id_promocao, preco, datetime, endereco_url, cnpj_teatro, nome_peca);
+                listaPromocao.add(promocao);
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaPromocao;
+    }
+    public List<Promocao> getByNameAndUser(String nome_peca, String teatro) {
+        List<Promocao> listaPromocao = new ArrayList<>();
+        String sql = "SELECT * FROM Promocao where nome_peca like '%" + nome_peca + "%' and cnpj_teatro = '" + new DAOSalaDeTeatro().getByName(teatro).get(0).getCnpj() + "'";
         try {
             Connection conn = this.getConnection();
             Statement statement = conn.createStatement();

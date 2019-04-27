@@ -3,6 +3,8 @@ package br.ufscar.dc.dsw.controller;
 import br.ufscar.dc.dsw.dao.DAOPromocao;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
 import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
+import br.ufscar.dc.dsw.dao.DAOTokenLogin;
+import br.ufscar.dc.dsw.dao.DAOUsuario;
 import br.ufscar.dc.dsw.model.Promocao;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -94,7 +96,8 @@ public class PromocaoController extends HttpServlet {
 
     private void lista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao") || new AuthController().hasRole(request, "listar_promocao")) {
+        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao")
+                || new AuthController().hasRole(request, "listar_promocao")) {
             if (request.getMethod().equals("POST")) {
                 List<Promocao> lista = dao.getByCnpjTeatro(request.getParameter("busca"));
                 request.setAttribute("listaPromocao", lista);
@@ -115,14 +118,13 @@ public class PromocaoController extends HttpServlet {
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
         if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao")) {
-
             if (request.getParameter("busca") != null) {
-                List<Promocao> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
+                List<Promocao> lista = dao.getByNameAndUser(String.valueOf(request.getParameter("busca")), new DAOSalaDeTeatro().getByName(****Usuariologado.getNome****).get(0).getCnpj());
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
             } else {
-                List<Promocao> lista = dao.getAll();
+                List<Promocao> lista = dao.getByUser(new DAOSalaDeTeatro().getByName(****Usuariologado.getNome****).get(0).getCnpj());
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);

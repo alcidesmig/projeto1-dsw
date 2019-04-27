@@ -1,8 +1,14 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.dao.DAOPapel;
+import br.ufscar.dc.dsw.dao.DAOPapelUsuario;
 import br.ufscar.dc.dsw.model.SiteDeVenda;
 import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
+import br.ufscar.dc.dsw.dao.DAOUsuario;
+import br.ufscar.dc.dsw.model.Papel;
+import br.ufscar.dc.dsw.model.PapelUsuario;
 import br.ufscar.dc.dsw.model.Promocao;
+import br.ufscar.dc.dsw.model.Usuario;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -132,8 +138,20 @@ public class SiteDeVendaController extends HttpServlet {
             String senha = request.getParameter("password");
             String nome = request.getParameter("nome");
             site = new SiteDeVenda(email, senha, url, nome, telefone);
+            Usuario user = new Usuario(email, nome, senha, new Date(System.currentTimeMillis()));
+            new DAOUsuario().insert(user);
+            Papel p = new Papel("listar_promocao");
+            List<Papel> lista = new DAOPapel().getAll();
+            if (!lista.contains(p)) {
+                new DAOPapel().insert(p);
+            }
+            for (Papel x : new DAOPapel().getAll()) {
+                if (x.getNome().equals("listar_promocao")) {
+                    new DAOPapelUsuario().insert(new PapelUsuario(email, x.getId()));
+                    break;
+                }
+            }
             dao.insert(site);
-            System.out.println("Inserido.");
             response.sendRedirect("lista");
         } catch (Exception e) {
             request.setAttribute("site", site);
