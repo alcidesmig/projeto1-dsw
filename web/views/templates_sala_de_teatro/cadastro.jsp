@@ -16,15 +16,13 @@
 <jsp:include page="../helpers/navbar.jsp">
     <jsp:param name="active" value="teatros"/>
 </jsp:include>
+
 <div class="ui text container">
 <center>
     <h1><fmt:message key="teatro.cadastro.h1"/></h1>
 </center>
-      <form class="form-horizontal ui form" action="cadastro" method="post" style="width: 50%;">
-        <fieldset>
+    <form class="ui form" action="cadastro" method="post">
 
-            <!-- Form Name -->
-            <legend><fmt:message key="cadastro.sala_de_teatro.form_title"/></legend>
 
         <div class="field">
             <label for="sala_de_teatro_email"><fmt:message key="teatro.list.email"/></label>  
