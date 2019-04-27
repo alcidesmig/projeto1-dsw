@@ -35,6 +35,8 @@ public class UsuarioController extends HttpServlet {
                 return;
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("/projeto1_dsw/500.jsp");
+            return;
         }
         String action = request.getRequestURI();
         action = action.split("/")[action.split("/").length - 1];
@@ -60,10 +62,12 @@ public class UsuarioController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if ( !AuthController.canAccess(request, response, "administrador") )
+            if ( !AuthController.canAccess(request, response, "admin") )
                 return ;
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("/projeto1_dsw/500.jsp");
+            return;
         }
         String action = request.getRequestURI();
         action = action.split("/")[action.split("/").length - 1];

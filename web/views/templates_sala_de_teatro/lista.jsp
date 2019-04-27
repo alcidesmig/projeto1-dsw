@@ -1,80 +1,53 @@
+<%@page import="br.ufscar.dc.dsw.controller.AuthController"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="br.ufscar.dc.dsw.i18n.text" />
+<c:set var="laguage" value="${pageContext.response.locale}"/>
+<fmt:setLocale value="${language}"/>
 
 <jsp:include page="../helpers/header.jsp">
-    <jsp:param name="title" value="Lista de Teatros"/>
+    <jsp:param name="title" value="teatros_list"/>
 </jsp:include>
 <jsp:include page="../helpers/navbar.jsp">
     <jsp:param name="active" value="teatros"/>
 </jsp:include>
-<style>
-    p{
-        cursor: pointer;
-        font-size: 24px;
-    }    
-</style>
 <center>
-    <h1>Listagem Das Salas de Teatro</h1>
-</center>
-<br>
-<br>
-<div align="center">
-    <table border="1" cellpadding="5" id="java_is_terrible" class="ui sortable celled table" style="width: 80%;">
-         <div class="ui icon input">
+    <h1><fmt:message key="teatro.list.h1"/></h1>
+    <div class="ui icon input">
         <input type="text" placeholder="Filtre os teatros por cidade!" id="java_is_horrible" onkeyup="filter()">
         <i class="search icon"></i>
-        </div>
-        <tr>
-            <th><p onclick="sortTable(0)" class="ui labeled icon primary full-width"> <i class="sort alphabet down icon"></i>Cidade</p></th>
-            <th><p onclick="sortTable(1)" class="ui labeled icon primary full-width"> <i class="sort alphabet down icon"></i>Email</p></th>
-            <th><p onclick="sortTable(2)" class="ui labeled icon primary full-width"> <i class="sort alphabet down icon"></i>CNPJ</p></th>
-            <th><p onclick="sortTable(3)" class="ui labeled icon primary1 full-width"> <i class="sort alphabet down icon"></i>Nome</p></th>  
-        </tr>  
-        <c:forEach var="teatro" items="${listaTeatros}">
+    </div>
+    <br>
+    <br>
+</center>
+<div class="ui container">
+    <table id="java_is_terrible" class="ui sortable celled table">
+        <thead>
             <tr>
-                <td><c:out value="${teatro.cidade}" /></td>
-                <td><c:out value="${teatro.email}" /></td>
-                <td><c:out value="${teatro.cnpj}" /></td>
-                <td><c:out value="${teatro.nome}" /></td>
-                <td><c:out value="${teatro.site_de_venda_email}" /></td>
-            </tr>
-        </c:forEach>
+                <th><fmt:message key="teatro.list.cidade"/></th>
+                <th><fmt:message key="teatro.list.email"/></th>
+                <th><fmt:message key="teatro.list.cnpj"/></th>
+                <th><fmt:message key="teatro.list.nome"/></th>
+                <th><fmt:message key="teatro.list.email_vendas"/></th>
+            </tr> 
+        </thead>
+        <tbody>
+            <c:forEach var="teatro" items="${listaTeatros}">
+                <tr>
+                    <td><c:out value="${teatro.cidade}" /></td>
+                    <td><c:out value="${teatro.email}" /></td>
+                    <td><c:out value="${teatro.cnpj}" /></td>
+                    <td><c:out value="${teatro.nome}" /></td>
+                    <td><c:out value="${teatro.site_de_venda_email}" /></td>
+                </tr>
+            </c:forEach>
+        </tbody>
     </table>
 </div>
 <script>
-function sortTable(index) {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("java_is_terrible");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[index];
-      y = rows[i + 1].getElementsByTagName("TD")[index];
-      //check if the two rows should switch place:
-      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        //if so, mark as a switch and break the loop:
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
+    $(document).ready(function () {
+        $('table').tablesort();
+    });
 
 function filter() {
   var input, filter, table, tr, td, i, txtValue;

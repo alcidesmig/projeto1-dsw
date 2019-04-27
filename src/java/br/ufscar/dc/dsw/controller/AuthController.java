@@ -102,7 +102,7 @@ public class AuthController extends HttpServlet {
         }
         List<Papel> papeis = user.getPapeis();
         for (Papel a : papeis) {
-            if (a.getNome().equalsIgnoreCase(role));
+            if (a.getNome().equalsIgnoreCase(role))
                 return true;
         }
         return false;
