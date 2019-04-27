@@ -119,12 +119,12 @@ public class PromocaoController extends HttpServlet {
             throws ServletException, IOException, NoSuchAlgorithmException {
         if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao")) {
             if (request.getParameter("busca") != null) {
-                List<Promocao> lista = dao.getByNameAndUser(String.valueOf(request.getParameter("busca")), new DAOSalaDeTeatro().getByName(AuthController.getUser(request).getNome()).get(0).getCnpj());
+                List<Promocao> lista = dao.getByNameAndUser(String.valueOf(request.getParameter("busca")), new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail()).get(0).getCnpj());
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
             } else {
-                List<Promocao> lista = dao.getByUser(new DAOSalaDeTeatro().getByName(AuthController.getUser(request).getNome()).get(0).getCnpj());
+                List<Promocao> lista = dao.getByUser(new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail()).get(0).getCnpj());
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
