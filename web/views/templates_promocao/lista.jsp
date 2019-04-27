@@ -55,5 +55,10 @@
         </tbody>
     </table>
 </div>
+            <script>
+                $(document).ready(function () {
+                   $('table').tablesort(); 
+                });
+            </script>
 
 <jsp:include page="/views/helpers/footer.jsp"/>

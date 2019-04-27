@@ -28,7 +28,7 @@
     <br>
     <br>
     
-    <table class="ui sortable celled table">
+    <table id="java_is_terrible" class="ui sortable celled table">
         <thead>
             <tr>
                 <th><fmt:message key="promocao.list.peca_nome"/></th>

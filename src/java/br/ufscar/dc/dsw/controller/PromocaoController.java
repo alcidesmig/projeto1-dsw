@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,9 @@ public class PromocaoController extends HttpServlet {
                 case "lista":
                     lista(request, response);
                     break;
+                case "edicao":
+                    atualize(request, response);
+                    break;
                 case "gerenciar":
                     listaGerenciar(request, response);
                     break;
@@ -74,9 +78,6 @@ public class PromocaoController extends HttpServlet {
                     break;
                 case "edicao_form":
                     apresentaFormEdicao(request, response);
-                    break;
-                case "edicao":
-                    atualize(request, response);
                     break;
                 case "remocao":
                     remove(request, response);
@@ -111,7 +112,7 @@ public class PromocaoController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            response.sendRedirect("/403.jsp");
+            response.sendRedirect("/projeto1_dsw/403.jsp");
         }
 
     }
@@ -136,7 +137,7 @@ public class PromocaoController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            response.sendRedirect("/403.jsp");
+            response.sendRedirect("/projeto1_dsw/403.jsp");
         }
     }
 
@@ -174,7 +175,6 @@ public class PromocaoController extends HttpServlet {
                 Promocao promocao = new Promocao(preco, datetime, endereco_url, cnpj_teatro, nome_peca);
                 Boolean cadastra = true;
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                sdf.parse(datetime);
                 for (Promocao p : dao.getByCnpjTeatro(cnpj_teatro)) {
                     if (p.getDatetime().equals(datetime)) {
                         cadastra = false;
@@ -186,16 +186,18 @@ public class PromocaoController extends HttpServlet {
                     request.setAttribute("erro", "Promoção no mesmo horário!");
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
                     dispatcher.forward(request, response);
+                    response.setStatus(500);
                 } else {
                     dao.insert(promocao);
 
                     response.sendRedirect("lista");
                 }
-            } catch (ParseException | IOException | NumberFormatException | ServletException e) {
+            } catch (IOException | NumberFormatException | ServletException e) {
                 request.setAttribute("erro", "Erro ao fazer o cadastro! Confira a integridade dos dados.");
                 request.setAttribute("listaSalas", new DAOSalaDeTeatro().getAll());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/cadastro.jsp");
                 dispatcher.forward(request, response);
+                response.setStatus(500);
             }
         } else {
             response.sendRedirect("lista");

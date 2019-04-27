@@ -4,9 +4,11 @@ import br.ufscar.dc.dsw.dao.DAOPapel;
 import br.ufscar.dc.dsw.dao.DAOPapelUsuario;
 import br.ufscar.dc.dsw.model.SalaDeTeatro;
 import br.ufscar.dc.dsw.dao.DAOSalaDeTeatro;
+import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
 import br.ufscar.dc.dsw.dao.DAOUsuario;
 import br.ufscar.dc.dsw.model.Papel;
 import br.ufscar.dc.dsw.model.PapelUsuario;
+import br.ufscar.dc.dsw.model.SiteDeVenda;
 import br.ufscar.dc.dsw.model.Usuario;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -65,6 +67,17 @@ public class SalaDeTeatroController extends HttpServlet {
                     }
                     listaGerenciar(request, response);
                     break;
+                case "edicao":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
+                    atualize(request, response);
+                    break;
                 default:
                     lista(request, response);
                     break;
@@ -119,17 +132,6 @@ public class SalaDeTeatroController extends HttpServlet {
                     }
                     apresentaFormEdicao(request, response);
                     break;
-                case "edicao":
-                    try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
-                            return;
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-                        response.sendRedirect("/projeto1_dsw/500.jsp");
-                        return;
-                    }
-                    atualize(request, response);
-                    break;
                 case "remocao":
                     try {
                         if ( !AuthController.canAccess(request, response, "admin") )
@@ -168,12 +170,12 @@ public class SalaDeTeatroController extends HttpServlet {
             throws ServletException, IOException, NoSuchAlgorithmException {
         // TODO: Criar templates para SalaDeTeatro
         if (new AuthController().hasRole(request, "admin")) {
-            List<SalaDeTeatro> listaSites = new DAOSalaDeTeatro().getAll();
-            request.setAttribute("listaTeatros", listaSites);
+            List<SiteDeVenda> listaSites = new DAOSiteDeVenda().getAll();
+            request.setAttribute("listaSites", listaSites);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
             dispatcher.forward(request, response);
         } else {
-            response.sendRedirect("/403.jsp");
+            response.sendRedirect("/projeto1_dsw/403.jsp");
 
         }
     }
@@ -220,7 +222,7 @@ public class SalaDeTeatroController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            response.sendRedirect("/403.jsp");
+            response.sendRedirect("/projeto1_dsw/403.jsp");
         }
     }
 
@@ -229,7 +231,7 @@ public class SalaDeTeatroController extends HttpServlet {
 
         SalaDeTeatro teatro = dao.get(request.getParameter("id"));
         request.setAttribute("teatro", teatro);
-        request.setAttribute("listaTeatros", new DAOSalaDeTeatro().getAll());
+        request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
         dispatcher.forward(request, response);
