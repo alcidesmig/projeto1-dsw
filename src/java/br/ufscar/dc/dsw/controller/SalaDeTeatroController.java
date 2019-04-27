@@ -152,6 +152,8 @@ public class SalaDeTeatroController extends HttpServlet {
             throw new ServletException(e);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(SalaDeTeatroController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SalaDeTeatroController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

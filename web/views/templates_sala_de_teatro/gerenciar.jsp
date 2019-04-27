@@ -53,11 +53,11 @@
                     <td><c:out value="${teatro.nome}" /></td>
                     <td><c:out value="${teatro.site_de_venda_email}" /></td>
                     <td>
-                        <a href="edicao_form?id=<c:out value='${teatro.cnpj}' />">Edição</a>
+                        <a href="edicao_form?id=<c:out value='${teatro.cnpj}' />"><fmt:message key="crud.edit"/></a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="remocao?cnpj=<c:out value='${teatro.cnpj}' />"
                            onclick="return confirm('<fmt:message key="allform.excluir"/>');">
-                            Remoção
+                            <fmt:message key="crud.delete"/>
                         </a>
                     </td>
                 </tr>
