@@ -65,6 +65,17 @@ public class SalaDeTeatroController extends HttpServlet {
                     }
                     listaGerenciar(request, response);
                     break;
+                case "edicao":
+                    try {
+                        if ( !AuthController.canAccess(request, response, "admin") )
+                            return;
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendRedirect("/projeto1_dsw/500.jsp");
+                        return;
+                    }
+                    atualize(request, response);
+                    break;
                 default:
                     lista(request, response);
                     break;
@@ -118,17 +129,6 @@ public class SalaDeTeatroController extends HttpServlet {
                         return;
                     }
                     apresentaFormEdicao(request, response);
-                    break;
-                case "edicao":
-                    try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
-                            return;
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-                        response.sendRedirect("/projeto1_dsw/500.jsp");
-                        return;
-                    }
-                    atualize(request, response);
                     break;
                 case "remocao":
                     try {

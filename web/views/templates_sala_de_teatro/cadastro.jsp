@@ -10,18 +10,32 @@
         return ; 
 %>
 
-<jsp:include page="../helpers/header.jsp">
-    <jsp:param name="title" value="teatros_cadastro"/>
-</jsp:include>
+<c:if test="${teatro == null}">
+    <jsp:include page="../helpers/header.jsp">
+        <jsp:param name="title" value="teatros_cadastro"/>
+    </jsp:include>
+</c:if>
+<c:if test="${teatro != null}">
+    <jsp:include page="../helpers/header.jsp">
+        <jsp:param name="title" value="teatros_edit"/>
+    </jsp:include>
+</c:if>
 <jsp:include page="../helpers/navbar.jsp">
     <jsp:param name="active" value="teatros"/>
 </jsp:include>
 
 <div class="ui text container">
 <center>
-    <h1><fmt:message key="teatro.cadastro.h1"/></h1>
+    <h1>
+        <c:if test="${teatro == null}">
+            <fmt:message key="teatro.cadastro.h1"/>
+        </c:if>
+        <c:if test="${teatro != null}">
+            <fmt:message key="teatro.editar.h1"/>
+        </c:if>
+    </h1>
 </center>
-    <form class="ui form" action="cadastro" method="post">
+    <form class="ui form" method="post">
 
 
         <div class="field">
@@ -81,6 +95,7 @@
        cnpj = $('#cnpj');
        cidade = $('#cidade');
        site_de_venda_email = $('#site_de_venda_email');
+       action = <c:if test="${teatro == null}">'cadastro'</c:if><c:if test="${teatro != null}">'edicao'</c:if>;
        form.form({
            fields: {
                email: {
@@ -159,7 +174,7 @@
             e.preventDefault();
             if (!form.form('is valid')) return;
             form.addClass('loading');
-            $.post('cadastro', {
+            $.post(action, {
                 email: email.val(),
                 password: password.val(),
                 nome: nome.val(),
@@ -167,7 +182,7 @@
                 cidade: cidade.val(),
                 site_de_venda_email: site_de_venda_email.val()
             }).done(function() {
-                window.location.href = '/projeto1_dsw/sala-de-teatro/lista';
+                window.location.href = '/projeto1_dsw/sala-de-teatro/garenciar';
             }).fail(function() {
                 form.removeClass('loading');
                 $('.ui.message').show();
