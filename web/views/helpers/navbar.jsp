@@ -46,7 +46,7 @@
             <div class="inverted menu">
                 <a class="item" href="/projeto1_dsw/sala-de-teatro/lista"><fmt:message key="navbar.item.teatro.list"/></a>
                 <% if (AuthController.canAccess(request, response, "admin")) { %>
-                    <a class="item" href="/projeto1_dsw/sala-de-teatro/cadastro"><fmt:message key="navbar.item.teatro.manage"/></a>
+                    <a class="item" href="/projeto1_dsw/sala-de-teatro/gerenciar"><fmt:message key="navbar.item.teatro.manage"/></a>
                 <% } %>
             </div>
         </div>

@@ -143,7 +143,7 @@ public class DAOSalaDeTeatro extends DBConnection {
        }
     public List<SalaDeTeatro> getByEmail(String email) {
            List<SalaDeTeatro> listaTeatro = new ArrayList<>();
-           String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE email like %?%";
+           String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE email like '%" + email + "%'";
            try {
                Connection conn = this.getConnection();
                Statement statement = conn.createStatement();
