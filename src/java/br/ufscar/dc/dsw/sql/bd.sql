@@ -67,3 +67,6 @@ create table token_login (
     CONSTRAINT TokenLogin_PK PRIMARY KEY (id)
 );
 
+INSERT INTO Usuario (email, nome, senha, data_criacao) VALUES ('admin', 'admin', 'admin', CURRENT DATE);
+INSERT INTO Papel (nome) VALUES ('admin');
+INSERT INTO papel_usuario (usuario, papel) VALUES ('admin', 1);

@@ -18,13 +18,45 @@
            <% if(active.equalsIgnoreCase("home")) out.print("active");%>
            item" href="/projeto1_dsw"><fmt:message key="navbar.item.home"/></a>
         
-        <% if (AuthController.hasRole(request, "administrador")) { %>
+        <% if (AuthController.hasRole(request, "admin")) { %>
             <div class="ui simple dropdown item" id="user">
                 <fmt:message key="navbar.item.user"/>
                 <i class="dropdown icon"></i>
                 <div class="inverted menu">
                     <a class="item" href="/projeto1_dsw/usuario/lista"><fmt:message key="navbar.item.user.list"/></a>
                     <a class="item" href="/projeto1_dsw/usuario/cadastro"><fmt:message key="navbar.item.user.register"/></a>
+                </div>
+            </div>
+        <% } %>
+        
+        <% if (true) { %>
+            <div class="ui simple dropdown item" id="user">
+                <fmt:message key="navbar.item.promocoes"/>
+                <i class="dropdown icon"></i>
+                <div class="inverted menu">
+                    <a class="item" href="/projeto1_dsw/promocao/lista"><fmt:message key="navbar.item.promocoes.list"/></a>
+                    <a class="item" href="/projeto1_dsw/promocao/gerenciar"><fmt:message key="navbar.item.promocoes.manage"/></a>
+                </div>
+            </div>
+        <% } %>
+        
+        <% if (true) { %>
+            <div class="ui simple dropdown item" id="user">
+                <fmt:message key="navbar.item.teatro"/>
+                <i class="dropdown icon"></i>
+                <div class="inverted menu">
+                    <a class="item" href="/projeto1_dsw/sala-de-teatro/lista"><fmt:message key="navbar.item.teatro.list"/></a>
+                    <a class="item" href="/projeto1_dsw/sala-de-teatro/cadastro"><fmt:message key="navbar.item.teatro.manage"/></a>
+                </div>
+            </div>
+        <% } %>
+        <% if (true) { %>
+            <div class="ui simple dropdown item" id="user">
+                <fmt:message key="navbar.item.site"/>
+                <i class="dropdown icon"></i>
+                <div class="inverted menu">
+                    <a class="item" href="/projeto1_dsw/site-de-venda/lista"><fmt:message key="navbar.item.site.list"/></a>
+                    <a class="item" href="/projeto1_dsw/site-de-venda/gerenciar"><fmt:message key="navbar.item.site.manage"/></a>
                 </div>
             </div>
         <% } %>

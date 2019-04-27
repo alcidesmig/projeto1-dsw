@@ -6,7 +6,7 @@
 <fmt:setLocale value="${language}"/>
 
 <%             
-    if ( !AuthController.canAccess(request, response, "administrador") )
+    if ( !AuthController.canAccess(request, response, "admin") )
         return ; 
 %>
 
