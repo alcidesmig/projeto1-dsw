@@ -97,7 +97,7 @@ public class DAOSiteDeVenda extends DBConnection {
 
     public SiteDeVenda get(String id) {
         SiteDeVenda site = null;
-        String sql = "SELECT email,url,nome,telefone FROM SiteDeVenda WHERE email = ?";
+        String sql = "SELECT email,url,nome,telefone,senha FROM SiteDeVenda WHERE email = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -108,7 +108,8 @@ public class DAOSiteDeVenda extends DBConnection {
                 String url = resultSet.getString("url");
                 String nome = resultSet.getString("nome");
                 String telefone = resultSet.getString("telefone");
-                site = new SiteDeVenda(email,"", url, nome, telefone);
+                String senha = resultSet.getString("senha");
+                site = new SiteDeVenda(email,senha, url, nome, telefone);
             }
             resultSet.close();
             statement.close();

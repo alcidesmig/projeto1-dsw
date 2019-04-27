@@ -148,7 +148,7 @@
        }).on('submit', function (e) {
             e.preventDefault();
             if (!form.form('is valid')) return;
-            form.addCalss('loading');
+            form.addClass('loading');
             $.post(action, {
                 <c:if test="${prom != null}">
                  id_promocao: id_promocao.val(),

@@ -49,7 +49,7 @@
         <div class="field">
             <label  for="password"><fmt:message key="teatro.cadastro.password"/></label>
             <input id="password" name="password" type="password" placeholder="<fmt:message key="teatro.cadastro.password"/>"
-                   value="<c:out value="${teatro.senha}"/>">
+                   value="<c:out value="${teatro.senha}"/>" <c:if test="${teatro != null}">disabled</c:if>>
         </div>
 
         <!-- Text input-->
@@ -62,7 +62,7 @@
         <div class="field">
             <label for="cnpj"><fmt:message key="teatro.list.cnpj"/></label>  
             <input id="cnpj" name="cnpj" type="text" placeholder="<fmt:message key="teatro.list.cnpj"/>"
-                   value="<c:out value="${teatro.cnpj}"/>">
+                   value="<c:out value="${teatro.cnpj}"/>" <c:if test="${teatro != null}">disabled=""</c:if>>
         </div>
 
         <div class="field">

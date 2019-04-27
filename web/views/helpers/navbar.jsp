@@ -29,7 +29,7 @@
             </div>
         <% } %>
         
-        <% if (true) { %>
+        <% if (AuthController.canAccess(request, response, "admin")) { %>
             <div class="ui simple dropdown item" id="user">
                 <fmt:message key="navbar.item.promocoes"/>
                 <i class="dropdown icon"></i>
@@ -57,7 +57,9 @@
                 <i class="dropdown icon"></i>
                 <div class="inverted menu">
                     <a class="item" href="/projeto1_dsw/site-de-venda/lista"><fmt:message key="navbar.item.site.list"/></a>
+                    <% if (AuthController.canAccess(request, response, "admin")) { %>
                     <a class="item" href="/projeto1_dsw/site-de-venda/gerenciar"><fmt:message key="navbar.item.site.manage"/></a>
+                    <% } %>
                 </div>
             </div>
         <% } %>

@@ -96,7 +96,7 @@ public class DAOSalaDeTeatro extends DBConnection {
 //    }
     public SalaDeTeatro get(String id) {
         SalaDeTeatro teatro = null;
-        String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE cnpj = ?";
+        String sql = "SELECT email,cnpj,nome,cidade,senha FROM SalaDeTeatro WHERE cnpj = ?";
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -107,8 +107,9 @@ public class DAOSalaDeTeatro extends DBConnection {
                 String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
                 String cidade = resultSet.getString("cidade");
+                String senha = resultSet.getString("senha");
                 String site_de_venda_email = resultSet.getString("email");
-                teatro = new SalaDeTeatro(email, "", cnpj, nome, cidade, site_de_venda_email);
+                teatro = new SalaDeTeatro(email, senha, cnpj, nome, cidade, site_de_venda_email);
             }
             resultSet.close();
             statement.close();

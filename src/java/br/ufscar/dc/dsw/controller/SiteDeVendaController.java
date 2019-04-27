@@ -42,6 +42,9 @@ public class SiteDeVendaController extends HttpServlet {
                 case "cadastro":
                     insere(request, response);
                     break;
+                case "edicao":
+                    atualize(request, response);
+                    break;
                 default:
                     apresentaFormCadastro(request, response);
                     break;
@@ -69,9 +72,6 @@ public class SiteDeVendaController extends HttpServlet {
                 case "edicao_form":
                     apresentaFormEdicao(request, response);
                     break;
-                case "edicao":
-                    atualize(request, response);
-                    break;
                 case "remocao":
                     remove(request, response);
                     break;
@@ -95,16 +95,16 @@ public class SiteDeVendaController extends HttpServlet {
             if (request.getParameter("busca") != null) {
                 List<SiteDeVenda> lista = dao.getByName(String.valueOf(request.getParameter("busca")));
                 request.setAttribute("listaSite", lista);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/gerenciar.jsp");
                 dispatcher.forward(request, response);
             } else {
                 List<SiteDeVenda> lista = dao.getAll();
                 request.setAttribute("listaSite", lista);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/gerenciar.jsp");
                 dispatcher.forward(request, response);
             }
         } else {
-            response.sendRedirect("/403.jsp");
+            response.sendRedirect("/projeto1_dsw/403.jsp");
         }
     }
 
@@ -123,7 +123,7 @@ public class SiteDeVendaController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_site_de_venda/cadastro.jsp");
             dispatcher.forward(request, response);
         } else {
-            response.sendRedirect("/403.jsp");
+            response.sendRedirect("/projeto1_dsw/403.jsp");
 
         }
     }
@@ -167,7 +167,7 @@ public class SiteDeVendaController extends HttpServlet {
             throws ServletException, IOException {
         SiteDeVenda site = null;
         try {
-            String email = request.getParameter("email");
+            String email = request.getParameter("id");
             site = dao.get(email);
             request.setAttribute("site", site);
             request.setAttribute("listaSites", new DAOSiteDeVenda().getAll());
