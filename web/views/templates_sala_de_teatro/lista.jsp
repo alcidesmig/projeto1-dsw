@@ -14,7 +14,7 @@
 <center>
     <h1><fmt:message key="teatro.list.h1"/></h1>
     <div class="ui icon input">
-        <input type="text" placeholder="Filtre os teatros por cidade!" id="java_is_horrible" onkeyup="filter()">
+        <input type="text" id="java_is_horrible" onkeyup="filter()">
         <i class="search icon"></i>
     </div>
     <br>
@@ -49,6 +49,14 @@
         $('table').tablesort();
     });
 
+function hasInTd(filter, td) {
+    txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          return true;
+      }
+      return false;
+}
+
 function filter() {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("java_is_horrible");
@@ -56,14 +64,15 @@ function filter() {
   table = document.getElementById("java_is_terrible");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
+    tds = tr[i].getElementsByTagName("td");
+    if (tds.length) {
         tr[i].style.display = "none";
-      }
+    }
+    for (j = 0; j < tds.length; j++) {
+        td = tds[j];
+        if (hasInTd(filter, td)) {
+            tr[i].style.display = "";
+        }
     }       
   }
 }

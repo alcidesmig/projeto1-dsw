@@ -40,16 +40,17 @@
             </div>
         <% } %>
         
-        <% if (true) { %>
-            <div class="ui simple dropdown item" id="user">
-                <fmt:message key="navbar.item.teatro"/>
-                <i class="dropdown icon"></i>
-                <div class="inverted menu">
-                    <a class="item" href="/projeto1_dsw/sala-de-teatro/lista"><fmt:message key="navbar.item.teatro.list"/></a>
+        <div class="ui simple dropdown item" id="user">
+            <fmt:message key="navbar.item.teatro"/>
+            <i class="dropdown icon"></i>
+            <div class="inverted menu">
+                <a class="item" href="/projeto1_dsw/sala-de-teatro/lista"><fmt:message key="navbar.item.teatro.list"/></a>
+                <% if (AuthController.canAccess(request, response, "admin")) { %>
                     <a class="item" href="/projeto1_dsw/sala-de-teatro/cadastro"><fmt:message key="navbar.item.teatro.manage"/></a>
-                </div>
+                <% } %>
             </div>
-        <% } %>
+        </div>
+        
         <% if (true) { %>
             <div class="ui simple dropdown item" id="user">
                 <fmt:message key="navbar.item.site"/>

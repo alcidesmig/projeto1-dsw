@@ -31,7 +31,7 @@ public class UsuarioController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if ( !AuthController.canAccess(request, response, "administrador") )
+            if ( !AuthController.canAccess(request, response, "admin") )
                 return;
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
