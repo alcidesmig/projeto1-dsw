@@ -6,6 +6,7 @@ import br.ufscar.dc.dsw.dao.DAOSiteDeVenda;
 import br.ufscar.dc.dsw.dao.DAOTokenLogin;
 import br.ufscar.dc.dsw.dao.DAOUsuario;
 import br.ufscar.dc.dsw.model.Promocao;
+import br.ufscar.dc.dsw.model.SalaDeTeatro;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -124,7 +125,12 @@ public class PromocaoController extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
             } else {
-                List<Promocao> lista = dao.getByUser(new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail()).get(0).getCnpj());
+                List<SalaDeTeatro> sala = new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail());
+                List<Promocao> lista = null;
+                if ( !sala.isEmpty() ) {
+                    lista = dao.getByUser(sala.get(0).getCnpj());
+                }
+                
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
