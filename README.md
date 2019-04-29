@@ -17,6 +17,3 @@
     * User:admin
     * Senha: admin
     
-* Alguma informação adicional?
-   * https://tms-outsource.com/blog/posts/web-technologies/
-   * https://medium.freecodecamp.org/best-programming-languages-to-learn-in-2018-ultimate-guide-bfc93e615b35
