@@ -17,10 +17,6 @@ public class SiteDeVenda {
 
     public SiteDeVenda(String email) {
         this.email = email;
-        this.senha = "";
-        this.url = "";
-        this.nome = "";
-        this.telefone = "";
     }
 
     public String getEmail() {

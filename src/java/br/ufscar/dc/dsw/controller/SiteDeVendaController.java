@@ -200,15 +200,15 @@ public class SiteDeVendaController extends HttpServlet {
                 url,
                 nome,
                 telefone);
-
+        
         dao.update(site);
         response.sendRedirect("listaGerenciar");
     }
 
     private void remove(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String email = request.getParameter("email");
-        SiteDeVenda site = new SiteDeVenda(email);
+        String email = request.getParameter("id");
+        SiteDeVenda site = dao.get(email);
         dao.delete(site);
         response.sendRedirect("gerenciar");
     }
