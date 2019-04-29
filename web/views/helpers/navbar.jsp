@@ -29,7 +29,7 @@
             </div>
         <% } %>
         
-        <% if (AuthController.canAccess(request, response, "admin")) { %>
+        <% if (AuthController.canAccess(request, response, "admin") || AuthController.canAccess(request, response, "gerenciar_promocao")) { %>
             <div class="ui simple dropdown item" id="user">
                 <fmt:message key="navbar.item.promocoes"/>
                 <i class="dropdown icon"></i>
@@ -45,7 +45,7 @@
             <i class="dropdown icon"></i>
             <div class="inverted menu">
                 <a class="item" href="/projeto1_dsw/sala-de-teatro/lista"><fmt:message key="navbar.item.teatro.list"/></a>
-                <% if (AuthController.canAccess(request, response, "admin")) { %>
+                <% if (AuthController.canAccess(request, response, "admin") || AuthController.canAccess(request, response, "gerenciar_teatro")) { %>
                     <a class="item" href="/projeto1_dsw/sala-de-teatro/gerenciar"><fmt:message key="navbar.item.teatro.manage"/></a>
                 <% } %>
             </div>

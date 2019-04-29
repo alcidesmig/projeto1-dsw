@@ -121,8 +121,9 @@ public class DAOPromocao extends DBConnection {
 
     public List<Promocao> getByUser(String teatro) {
         List<Promocao> listaPromocao = new ArrayList<>();
-        String sql = "SELECT * FROM Promocao where cnpj_teatro = '" + new DAOSalaDeTeatro().getByName(teatro).get(0).getCnpj() + "'";
         try {
+            String sql = "SELECT * FROM Promocao where cnpj_teatro = '" + new DAOSalaDeTeatro().getByName(teatro).get(0).getCnpj() + "'";
+
             Connection conn = this.getConnection();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -140,8 +141,8 @@ public class DAOPromocao extends DBConnection {
             resultSet.close();
             statement.close();
             conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            return listaPromocao;
         }
         return listaPromocao;
     }
@@ -172,6 +173,7 @@ public class DAOPromocao extends DBConnection {
         }
         return listaPromocao;
     }
+
     public List<Promocao> getByNameAndUser(String nome_peca, String teatro) {
         List<Promocao> listaPromocao = new ArrayList<>();
         String sql = "SELECT * FROM Promocao where nome_peca like '%" + nome_peca + "%' and cnpj_teatro = '" + new DAOSalaDeTeatro().getByName(teatro).get(0).getCnpj() + "'";

@@ -119,19 +119,23 @@ public class PromocaoController extends HttpServlet {
 
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao")) {
+        if (AuthController.hasRole(request, "admin") || AuthController.hasRole(request, "gerenciar_promocao")) {
             if (request.getParameter("busca") != null) {
                 List<Promocao> lista = dao.getByNameAndUser(String.valueOf(request.getParameter("busca")), new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail()).get(0).getCnpj());
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
             } else {
-                List<SalaDeTeatro> sala = new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail());
                 List<Promocao> lista = null;
-                if ( !sala.isEmpty() ) {
-                    lista = dao.getByUser(sala.get(0).getCnpj());
+                if (AuthController.hasRole(request, "admin") || AuthController.hasRole(request, "gerenciar_promocao")) {
+                    lista = dao.getAll();
+//                } else {
+//                    List<SalaDeTeatro> sala = new DAOSalaDeTeatro().getByEmail(AuthController.getUser(request).getEmail());
+//                    if (!sala.isEmpty()) {
+//                        lista = dao.getByUser(sala.get(0).getCnpj());
+//                    }
                 }
-                
+
                 request.setAttribute("listaPromocao", lista);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_promocao/gerenciar.jsp");
                 dispatcher.forward(request, response);
@@ -164,7 +168,7 @@ public class PromocaoController extends HttpServlet {
 
     private void insere(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, ServletException, IOException, NoSuchAlgorithmException {
         request.setCharacterEncoding("UTF-8");
-        if (new AuthController().hasRole(request, "gerenciar_promocao")) {
+        if (AuthController.hasRole(request, "admin") || AuthController.hasRole(request, "gerenciar_promocao")) {
             try {
                 String endereco_url = request.getParameter("endereco_url");
                 String nome_peca = request.getParameter("nome_peca");
@@ -189,7 +193,6 @@ public class PromocaoController extends HttpServlet {
                     response.setStatus(500);
                 } else {
                     dao.insert(promocao);
-
                     response.sendRedirect("lista");
                 }
             } catch (IOException | NumberFormatException | ServletException e) {

@@ -14,10 +14,7 @@
 
 <div class="ui text container ">
     <marquee><h1><fmt:message key="index.h1"/></h1></marquee>
-    
-    <p><fmt:message key="index.p1"/></p>
-    
-    <p><fmt:message key="index.p2"/>:<a href="http://sou.gohorseprocess.com.br/extreme-go-horse-xgh/">como fazer softwares com um mínimo de senso</a></p>
+
 
 
 </div>

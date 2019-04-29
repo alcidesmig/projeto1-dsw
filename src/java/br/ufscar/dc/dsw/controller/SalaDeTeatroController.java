@@ -44,7 +44,7 @@ public class SalaDeTeatroController extends HttpServlet {
 
                 case "cadastro":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin")  || AuthController.hasRole(request, "gerenciar_teatro"))
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,7 +58,7 @@ public class SalaDeTeatroController extends HttpServlet {
                     break;
                 case "gerenciar":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin") || AuthController.hasRole(request, "gerenciar_teatro") )
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,7 +69,7 @@ public class SalaDeTeatroController extends HttpServlet {
                     break;
                 case "edicao":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin")  || AuthController.hasRole(request, "gerenciar_teatro"))
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,7 +101,7 @@ public class SalaDeTeatroController extends HttpServlet {
             switch (action) {
                 case "cadastro":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin")  || AuthController.hasRole(request, "gerenciar_teatro"))
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,7 +112,7 @@ public class SalaDeTeatroController extends HttpServlet {
                     break;
                 case "gerenciar":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin")  || AuthController.hasRole(request, "gerenciar_teatro"))
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -123,7 +123,7 @@ public class SalaDeTeatroController extends HttpServlet {
                     break;
                 case "edicao_form":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin")  || AuthController.hasRole(request, "gerenciar_teatro"))
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -134,7 +134,7 @@ public class SalaDeTeatroController extends HttpServlet {
                     break;
                 case "remocao":
                     try {
-                        if ( !AuthController.canAccess(request, response, "admin") )
+                        if ( !AuthController.canAccess(request, response, "admin")  || AuthController.hasRole(request, "gerenciar_teatro"))
                             return;
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,7 +169,7 @@ public class SalaDeTeatroController extends HttpServlet {
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
         // TODO: Criar templates para SalaDeTeatro
-        if (new AuthController().hasRole(request, "admin")) {
+        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_teatro")) {
             List<SiteDeVenda> listaSites = new DAOSiteDeVenda().getAll();
             request.setAttribute("listaSites", listaSites);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/templates_sala_de_teatro/cadastro.jsp");
@@ -208,7 +208,7 @@ public class SalaDeTeatroController extends HttpServlet {
 
     private void listaGerenciar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException {
-        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_promocao")) {
+        if (new AuthController().hasRole(request, "admin") || new AuthController().hasRole(request, "gerenciar_teatro")) {
 
             if (request.getParameter("busca") != null) {
                 List<SalaDeTeatro> lista = dao.getByName(String.valueOf(request.getParameter("busca")));

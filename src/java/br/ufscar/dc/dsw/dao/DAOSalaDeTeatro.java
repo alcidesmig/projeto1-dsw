@@ -121,51 +121,53 @@ public class DAOSalaDeTeatro extends DBConnection {
     }
 
     public List<SalaDeTeatro> getByName(String nome_peca) {
-           List<SalaDeTeatro> listaTeatro = new ArrayList<>();
-           String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE nome like %?%";
-           try {
-               Connection conn = this.getConnection();
-               Statement statement = conn.createStatement();
-               ResultSet resultSet = statement.executeQuery(sql);
-               while (resultSet.next()) {
-                    String email = resultSet.getString("email");
-                    String cnpj = resultSet.getString("cnpj");
-                    String nome = resultSet.getString("nome");
-                    String cidade = resultSet.getString("cidade");                 
-                   listaTeatro.add(new SalaDeTeatro(email,"",cnpj,nome,cidade,""));
-               }
-               resultSet.close();
-               statement.close();
-               conn.close();
-           } catch (SQLException e) {
-               throw new RuntimeException(e);
-           }
-           return listaTeatro;
-       }
-    public List<SalaDeTeatro> getByEmail(String email) {
-           List<SalaDeTeatro> listaTeatro = new ArrayList<>();
-           String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE email like '%" + email + "%'";
-           try {
-               Connection conn = this.getConnection();
-               Statement statement = conn.createStatement();
-               ResultSet resultSet = statement.executeQuery(sql);
-               while (resultSet.next()) {
-                    email = resultSet.getString("email");
-                    String cnpj = resultSet.getString("cnpj");
-                    String nome = resultSet.getString("nome");
-                    String cidade = resultSet.getString("cidade");                 
-                   listaTeatro.add(new SalaDeTeatro(email,"",cnpj,nome,cidade,""));
-               }
-               resultSet.close();
-               statement.close();
-               conn.close();
-           } catch (SQLException e) {
-               throw new RuntimeException(e);
-           }
-           return listaTeatro;
-       }
+        List<SalaDeTeatro> listaTeatro = new ArrayList<>();
+        String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE nome == ?";
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, nome_peca);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String email = resultSet.getString("email");
+                String cnpj = resultSet.getString("cnpj");
+                String nome = resultSet.getString("nome");
+                String cidade = resultSet.getString("cidade");
+                listaTeatro.add(new SalaDeTeatro(email, "", cnpj, nome, cidade, ""));
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaTeatro;
+    }
 
-     public void update(SalaDeTeatro sala) {
+    public List<SalaDeTeatro> getByEmail(String email) {
+        List<SalaDeTeatro> listaTeatro = new ArrayList<>();
+        String sql = "SELECT email,cnpj,nome,cidade FROM SalaDeTeatro WHERE email like '%" + email + "%'";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                email = resultSet.getString("email");
+                String cnpj = resultSet.getString("cnpj");
+                String nome = resultSet.getString("nome");
+                String cidade = resultSet.getString("cidade");
+                listaTeatro.add(new SalaDeTeatro(email, "", cnpj, nome, cidade, ""));
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaTeatro;
+    }
+
+    public void update(SalaDeTeatro sala) {
         String sql = "UPDATE SalaDeTeatro SET cnpj = ?,"
                 + " email = ?,"
                 + " senha = ?,"
